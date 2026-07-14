@@ -1,0 +1,14 @@
+{
+  "type": "footer",
+  "name": "Lábléc csoport",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "button_label": "Vásárolj most",
+        "menu": "footer"
+      }
+    }
+  },
+  "order": ["footer"]
+}

@@ -1,0 +1,188 @@
+<div class="section-pad">
+  <div class="page-width">
+    {%- if section.settings.title != blank -%}
+      <div class="section-heading">
+        <h2>{{ section.settings.title }}</h2>
+        {%- if section.settings.subtitle != blank -%}
+          <div class="section-heading__sub">{{ section.settings.subtitle }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="card-grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign card_collection = block.settings.collection
+          assign card_title = block.settings.title
+          assign card_url = block.settings.link
+          assign card_image = block.settings.image
+
+          if card_collection != blank
+            if card_title == blank
+              assign card_title = card_collection.title
+            endif
+            if card_url == blank
+              assign card_url = card_collection.url
+            endif
+            if card_image == blank
+              assign card_image = card_collection.featured_image
+            endif
+          endif
+        -%}
+
+        {%- if card_url != blank -%}
+          <a href="{{ card_url }}" class="info-card" {{ block.shopify_attributes }}>
+        {%- else -%}
+          <div class="info-card" {{ block.shopify_attributes }}>
+        {%- endif -%}
+
+          <div class="info-card__thumb">
+            {%- if card_image != blank -%}
+              <img
+                src="{{ card_image | image_url: width: 700 }}"
+                alt="{{ card_image.alt | default: card_title | escape }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              {%- case block.settings.icon -%}
+                {%- when 'kitchen' -%}
+                  <svg viewBox="0 0 24 24"><path d="M7 3v5c0 1.1.9 2 2 2s2-.9 2-2V3"/><path d="M9 3v6"/><path d="M9 10v11"/><path d="M16 3c-1.6 1.8-1.6 6.2 0 8"/><path d="M16 3v18"/></svg>
+                {%- when 'garden' -%}
+                  <svg viewBox="0 0 24 24"><path d="M5 10h8v7a2 2 0 01-2 2H7a2 2 0 01-2-2z"/><path d="M13 12h4l3-4"/><path d="M7 10V8a2 2 0 012-2h3"/></svg>
+                {%- when 'tag' -%}
+                  <svg viewBox="0 0 24 24"><path d="M11 3H4v7l9 9 7-7-9-9z"/><circle cx="7.5" cy="7.5" r="1.4"/></svg>
+                {%- when 'truck' -%}
+                  <svg viewBox="0 0 24 24"><path d="M3 6h11v10H3z"/><path d="M14 9h4l3 3.5V16h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="17.5" cy="18" r="2"/></svg>
+                {%- when 'chat' -%}
+                  <svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-4 3z"/><path d="M8 9.5h8M8 12.5h5"/></svg>
+                {%- else -%}
+                  <svg viewBox="0 0 24 24"><path d="M8 3h6l-1 9h-4z"/><path d="M7.5 3h7"/><path d="M9 12l-.4 2h6.8l-.4-2"/><path d="M8 14h8v4a1 1 0 01-1 1H9a1 1 0 01-1-1z"/></svg>
+              {%- endcase -%}
+            {%- endif -%}
+          </div>
+
+          <span class="info-card__label label-red">{{ card_title | default: 'Kategória' }}</span>
+
+          {%- if block.settings.text != blank -%}
+            <div class="info-card__desc">{{ block.settings.text }}</div>
+          {%- endif -%}
+
+          {%- if block.settings.tag != blank -%}
+            <span class="info-card__tag tag-dark">{{ block.settings.tag }}</span>
+          {%- endif -%}
+
+        {%- if card_url != blank -%}
+          </a>
+        {%- else -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Kategória kártyák",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Cím",
+      "default": "Miben segíthetünk?"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Alcím"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Kártya",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Gyűjtemény (opcionális)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Cím (felülírja a gyűjtemény nevét)"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Leírás"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Fekete címke szövege",
+          "default": "Nagyker ár"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (felülírja a gyűjtemény linkjét)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Kép (opcionális)"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ikon (ha nincs kép)",
+          "default": "appliance",
+          "options": [
+            { "value": "appliance", "label": "Háztartási gép" },
+            { "value": "kitchen", "label": "Konyhai eszköz" },
+            { "value": "garden", "label": "Kerti felszerelés" },
+            { "value": "tag", "label": "Árcédula" },
+            { "value": "truck", "label": "Szállítás" },
+            { "value": "chat", "label": "Üzenet" }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kategória kártyák",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "title": "Háztartási gépek",
+            "text": "Mixerek, vízforralók, botmixerek — a napi rutin gyorsabban és egyszerűbben.",
+            "tag": "Nagyker ár",
+            "icon": "appliance"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Konyhai eszközök",
+            "text": "Multifunkciós gépek, darálók és praktikus kiegészítők — a konyhád felszerelve.",
+            "tag": "Nagyker ár",
+            "icon": "kitchen"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Kerti felszerelés",
+            "text": "Szerszámok, locsolók és praktikus segítők a kertedhez, udvarodhoz.",
+            "tag": "Nagyker ár",
+            "icon": "garden"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

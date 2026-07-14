@@ -1,0 +1,31 @@
+<div class="announcement-bar">
+  {%- if section.settings.link != blank -%}
+    <a href="{{ section.settings.link }}">{{ section.settings.text }}</a>
+  {%- else -%}
+    {{ section.settings.text }}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Bejelentés sáv",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Szöveg",
+      "default": "Nagyker árak minden termékre — rendelj a webshopban vagy üzenetben!"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link (opcionális)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bejelentés sáv"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,13 @@
+{
+  "current": {
+    "color_accent": "#E30613",
+    "color_dark": "#111114",
+    "color_paper": "#EFEFEF",
+    "color_ink": "#1C1C20",
+    "color_muted": "#4A4A52",
+    "type_heading_font": "oswald_n4",
+    "type_body_font": "assistant_n4",
+    "logo_width": 200,
+    "contact_email": "info@euroexpress.hu"
+  }
+}

@@ -1,0 +1,75 @@
+<div class="section-pad">
+  <div class="page-width">
+    {%- if section.settings.title != blank -%}
+      <div class="section-heading">
+        <h2>{{ section.settings.title }}</h2>
+        {%- if section.settings.text != blank -%}
+          <div class="section-heading__sub">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {% form 'contact', class: 'form-grid' %}
+      {%- if form.posted_successfully? -%}
+        <div class="form-message form-message--success">
+          Köszönjük az üzeneted! Hamarosan válaszolunk.
+        </div>
+      {%- endif -%}
+      {%- if form.errors -%}
+        <div class="form-message form-message--error" role="alert">
+          Hiba történt az üzenet küldésekor:
+          <ul>
+            {%- for field in form.errors -%}
+              <li>{{ form.errors.messages[field] }}</li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <div>
+        <label for="ContactName-{{ section.id }}">Név</label>
+        <input id="ContactName-{{ section.id }}" type="text" name="contact[name]" value="{{ form.name }}" autocomplete="name" required>
+      </div>
+      <div>
+        <label for="ContactEmail-{{ section.id }}">E-mail</label>
+        <input id="ContactEmail-{{ section.id }}" type="email" name="contact[email]" value="{{ form.email }}" autocomplete="email" required>
+      </div>
+      <div>
+        <label for="ContactPhone-{{ section.id }}">Telefonszám (opcionális)</label>
+        <input id="ContactPhone-{{ section.id }}" type="tel" name="contact[phone]" value="{{ form.phone }}" autocomplete="tel">
+      </div>
+      <div>
+        <label for="ContactBody-{{ section.id }}">Üzenet</label>
+        <textarea id="ContactBody-{{ section.id }}" name="contact[body]" required>{{ form.body }}</textarea>
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn--red">Küldés</button>
+      </div>
+    {% endform %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Kapcsolat űrlap",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Cím",
+      "default": "Írj nekünk!"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Szöveg",
+      "default": "Kérdésed van egy termékről, vagy üzenetben rendelnél? Írj, és hamarosan válaszolunk."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kapcsolat űrlap"
+    }
+  ]
+}
+{% endschema %}

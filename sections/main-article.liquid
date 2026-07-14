@@ -1,0 +1,32 @@
+<div class="section-pad">
+  <div class="page-width">
+    <div class="page-title">
+      <h1>{{ article.title }}</h1>
+      <p style="margin-top: 10px; color: var(--color-muted); font-weight: 700;">
+        {{ article.published_at | date: '%Y. %m. %d.' }}
+      </p>
+    </div>
+
+    <div class="article-content">
+      {%- if article.image -%}
+        <img
+          src="{{ article.image | image_url: width: 1200 }}"
+          alt="{{ article.image.alt | default: article.title | escape }}"
+          loading="eager"
+        >
+      {%- endif -%}
+      {{ article.content }}
+    </div>
+
+    <div class="text-center mt-40">
+      <a href="{{ blog.url }}" class="btn">Vissza a bloghoz</a>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blogbejegyzés",
+  "settings": []
+}
+{% endschema %}

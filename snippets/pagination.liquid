@@ -1,0 +1,23 @@
+{%- comment -%}
+  Lapozó. Paraméter: paginate — a paginate objektum.
+{%- endcomment -%}
+
+{%- if paginate.pages > 1 -%}
+  <nav class="pagination" role="navigation" aria-label="Lapozás">
+    {%- if paginate.previous -%}
+      <a href="{{ paginate.previous.url }}" aria-label="Előző oldal">&laquo;</a>
+    {%- endif -%}
+    {%- for part in paginate.parts -%}
+      {%- if part.is_link -%}
+        <a href="{{ part.url }}">{{ part.title }}</a>
+      {%- elsif part.title == paginate.current_page -%}
+        <span class="pagination__current" aria-current="page">{{ part.title }}</span>
+      {%- else -%}
+        <span>{{ part.title }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if paginate.next -%}
+      <a href="{{ paginate.next.url }}" aria-label="Következő oldal">&raquo;</a>
+    {%- endif -%}
+  </nav>
+{%- endif -%}

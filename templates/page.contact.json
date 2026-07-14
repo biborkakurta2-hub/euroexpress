@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "contact-form",
+      "settings": {
+        "title": "Írj nekünk!",
+        "text": "Kérdésed van egy termékről, vagy üzenetben rendelnél? Írj, és hamarosan válaszolunk."
+      }
+    }
+  },
+  "order": ["main"]
+}

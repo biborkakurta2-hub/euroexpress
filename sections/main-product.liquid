@@ -1,0 +1,117 @@
+<div class="section-pad">
+  <div class="page-width">
+    <div class="product-page">
+
+      <div class="product-page__gallery">
+        {%- if product.images.size > 0 -%}
+          {%- for image in product.images limit: 4 -%}
+            <div class="product-page__image">
+              <img
+                src="{{ image | image_url: width: 1000 }}"
+                alt="{{ image.alt | default: product.title | escape }}"
+                width="600"
+                height="600"
+                {% if forloop.first %}loading="eager"{% else %}loading="lazy"{% endif %}
+              >
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="product-page__image">
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div>
+        {%- if product.vendor != blank -%}
+          <div class="product-page__vendor"><span class="label-red">{{ product.vendor }}</span></div>
+        {%- endif -%}
+
+        <h1 class="product-page__title">{{ product.title }}</h1>
+
+        <div class="product-page__price">
+          {% render 'price', product: product %}
+        </div>
+
+        {% form 'product', product, class: 'product-form' %}
+          {%- unless product.has_only_default_variant -%}
+            <div>
+              <label for="Variants-{{ section.id }}">Változat</label>
+              <select name="id" id="Variants-{{ section.id }}">
+                {%- for variant in product.variants -%}
+                  <option
+                    value="{{ variant.id }}"
+                    {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+                    {% unless variant.available %}disabled{% endunless %}
+                  >
+                    {{ variant.title }} — {{ variant.price | money }}{% unless variant.available %} (Elfogyott){% endunless %}
+                  </option>
+                {%- endfor -%}
+              </select>
+            </div>
+          {%- else -%}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          {%- endunless -%}
+
+          <div>
+            <label for="Quantity-{{ section.id }}">Mennyiség</label>
+            <div class="qty-box">
+              <button type="button" data-qty-minus aria-label="Kevesebb">&minus;</button>
+              <input
+                id="Quantity-{{ section.id }}"
+                type="number"
+                name="quantity"
+                value="1"
+                min="1"
+              >
+              <button type="button" data-qty-plus aria-label="Több">+</button>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            name="add"
+            class="btn btn--red btn--full"
+            {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+          >
+            {%- if product.selected_or_first_available_variant.available -%}
+              Kosárba
+            {%- else -%}
+              Elfogyott
+            {%- endif -%}
+          </button>
+        {% endform %}
+
+        {%- if product.description != blank -%}
+          <div class="product-page__description">
+            {{ product.description }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_message_note and settings.social_facebook != blank -%}
+          <div class="product-page__note">
+            Inkább üzenetben rendelnél? Írj ránk
+            <a href="{{ settings.social_facebook }}" target="_blank" rel="noopener">Facebookon</a>{% if settings.contact_email != blank %} vagy a
+            <a href="mailto:{{ settings.contact_email }}">{{ settings.contact_email }}</a> címen{% endif %},
+            és mi intézzük a rendelésed!
+          </div>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Termékoldal",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_message_note",
+      "label": "„Rendelés üzenetben” doboz megjelenítése",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

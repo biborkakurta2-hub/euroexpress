@@ -1,0 +1,19 @@
+{
+  "type": "header",
+  "name": "Fejléc csoport",
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "settings": {
+        "text": "Nagyker árak minden termékre — rendelj a webshopban vagy üzenetben!"
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "main-menu"
+      }
+    }
+  },
+  "order": ["announcement", "header"]
+}

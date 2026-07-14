@@ -1,0 +1,25 @@
+{%- comment -%}
+  Ár megjelenítése fekete árcédulán (a brosúra stílusában).
+  Paraméter: product — a termék objektum.
+{%- endcomment -%}
+
+{%- liquid
+  assign target = product.selected_or_first_available_variant | default: product
+  assign price = target.price | default: product.price
+  assign compare_price = target.compare_at_price
+-%}
+
+<span class="tag-dark">
+  {%- if product.price_varies -%}
+    {{ product.price_min | money }} -tól
+  {%- elsif compare_price > price -%}
+    <s>{{ compare_price | money }}</s>{{ price | money }}
+  {%- else -%}
+    {{ price | money }}
+  {%- endif -%}
+</span>
+{%- if product.available == false -%}
+  <span class="label-red">Elfogyott</span>
+{%- elsif compare_price > price -%}
+  <span class="label-red">Akció</span>
+{%- endif -%}

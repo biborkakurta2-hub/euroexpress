@@ -1,0 +1,122 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "EuroExpress Áruház",
+    "theme_version": "1.0.0",
+    "theme_author": "EuroExpress",
+    "theme_documentation_url": "https://github.com/biborkakurta2-hub/euroexpress",
+    "theme_support_url": "https://github.com/biborkakurta2-hub/euroexpress"
+  },
+  {
+    "name": "Színek",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Márka piros",
+        "default": "#E30613"
+      },
+      {
+        "type": "color",
+        "id": "color_dark",
+        "label": "Sötét (fekete)",
+        "default": "#111114"
+      },
+      {
+        "type": "color",
+        "id": "color_paper",
+        "label": "Háttér (papír)",
+        "default": "#EFEFEF"
+      },
+      {
+        "type": "color",
+        "id": "color_ink",
+        "label": "Szövegszín",
+        "default": "#1C1C20"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Halvány szövegszín",
+        "default": "#4A4A52"
+      }
+    ]
+  },
+  {
+    "name": "Tipográfia",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_heading_font",
+        "label": "Címsor betűtípus",
+        "default": "oswald_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Szöveg betűtípus",
+        "default": "assistant_n4"
+      }
+    ]
+  },
+  {
+    "name": "Logó",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Ha nem töltesz fel logóképet, a téma a beépített EUROEXPRESS ÁRUHÁZ logót jeleníti meg (piros EURO, fehér EXPRESS, fekete kerettel)."
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logó kép"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 80,
+        "max": 320,
+        "step": 10,
+        "unit": "px",
+        "label": "Logó szélessége",
+        "default": 200
+      }
+    ]
+  },
+  {
+    "name": "Kapcsolat és közösségi média",
+    "settings": [
+      {
+        "type": "text",
+        "id": "contact_email",
+        "label": "E-mail cím",
+        "default": "info@euroexpress.hu"
+      },
+      {
+        "type": "text",
+        "id": "contact_phone",
+        "label": "Telefonszám"
+      },
+      {
+        "type": "url",
+        "id": "social_facebook",
+        "label": "Facebook link"
+      },
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Instagram link"
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon kép"
+      }
+    ]
+  }
+]

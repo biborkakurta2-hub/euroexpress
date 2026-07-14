@@ -1,0 +1,54 @@
+<div class="section-pad">
+  <div class="page-width">
+    <div class="page-title">
+      <h1>Keresés</h1>
+    </div>
+
+    <form action="{{ routes.search_url }}" method="get" class="search-form" role="search">
+      <label for="SearchInput" class="visually-hidden">Keresés</label>
+      <input
+        id="SearchInput"
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="Mit keresel?"
+      >
+      <button type="submit" class="btn btn--red">Keresés</button>
+    </form>
+
+    {%- if search.performed -%}
+      {%- paginate search.results by 12 -%}
+        {%- if search.results.size > 0 -%}
+          <div class="product-grid">
+            {%- for item in search.results -%}
+              {%- if item.object_type == 'product' -%}
+                {% render 'card-product', product: item %}
+              {%- else -%}
+                <a href="{{ item.url }}" class="info-card">
+                  <span class="info-card__label label-red">{{ item.title }}</span>
+                  {%- if item.content != blank -%}
+                    <div class="info-card__desc">{{ item.content | strip_html | truncate: 120 }}</div>
+                  {%- endif -%}
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          {% render 'pagination', paginate: paginate %}
+        {%- else -%}
+          <div class="empty-state">
+            <h2>Nincs találat</h2>
+            <p>A(z) „{{ search.terms | escape }}” kifejezésre nem találtunk semmit. Próbáld más szavakkal!</p>
+            <a href="{{ routes.all_products_collection_url }}" class="btn">Összes termék</a>
+          </div>
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Kereső oldal",
+  "settings": []
+}
+{% endschema %}

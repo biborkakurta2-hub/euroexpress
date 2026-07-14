@@ -1,0 +1,76 @@
+<div class="section-pad">
+  <div class="page-width">
+    {%- if section.settings.title != blank -%}
+      <div class="section-heading">
+        <h2>{{ section.settings.title }}</h2>
+        {%- if section.settings.subtitle != blank -%}
+          <div class="section-heading__sub">{{ section.settings.subtitle }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="product-grid">
+      {%- assign collection = section.settings.collection -%}
+      {%- if collection != blank and collection.products.size > 0 -%}
+        {%- for product in collection.products limit: section.settings.limit -%}
+          {% render 'card-product', product: product %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..4) -%}
+          {% render 'card-product', product: blank, placeholder_index: forloop.index %}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_view_all and collection != blank -%}
+      <div class="text-center mt-40">
+        <a href="{{ collection.url }}" class="btn btn--red">Összes megtekintése</a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Kiemelt termékek",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Cím",
+      "default": "Katalógus ajánlatunk"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Alcím",
+      "default": "Nagyker árak, közvetlen beszerzésből — felesleges árrés nélkül."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Gyűjtemény"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 4,
+      "max": 12,
+      "step": 4,
+      "label": "Termékek száma",
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "„Összes megtekintése” gomb",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kiemelt termékek"
+    }
+  ]
+}
+{% endschema %}

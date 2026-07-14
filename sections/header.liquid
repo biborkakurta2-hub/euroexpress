@@ -1,0 +1,52 @@
+<header class="header">
+  <div class="page-width header__inner">
+
+    <details class="menu-drawer header__drawer-toggle">
+      <summary class="header__icon" aria-label="Menü">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </summary>
+      <nav class="menu-drawer__panel" aria-label="Mobil menü">
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+        {%- endfor -%}
+      </nav>
+    </details>
+
+    <a href="{{ routes.root_url }}" class="header__logo" aria-label="{{ shop.name | escape }} — Főoldal">
+      {% render 'logo' %}
+    </a>
+
+    <nav class="header__nav header__nav--desktop" aria-label="Fő menü">
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+
+    <div class="header__icons">
+      <a href="{{ routes.search_url }}" class="header__icon" aria-label="Keresés">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
+      </a>
+      <a href="{{ routes.cart_url }}" class="header__icon" aria-label="Kosár ({{ cart.item_count }} termék)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l1.5 12.5a1 1 0 01-1 1.1H5.5a1 1 0 01-1-1.1z"/><path d="M9 10V6a3 3 0 016 0v4"/></svg>
+        {%- if cart.item_count > 0 -%}
+          <span class="header__cart-count" aria-hidden="true">{{ cart.item_count }}</span>
+        {%- endif -%}
+      </a>
+    </div>
+
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Fejléc",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menü",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

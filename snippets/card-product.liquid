@@ -1,0 +1,42 @@
+{%- comment -%}
+  Termékkártya a brosúra katalógus-stílusában:
+  fehér kép-doboz, piros névcímke, fekete árcédula.
+  Paraméter: product — a termék objektum (üres esetén placeholder).
+  Opcionális: placeholder_index — placeholder kép sorszáma (1-6).
+{%- endcomment -%}
+
+{%- if product != blank -%}
+  <div class="card-product">
+    <a href="{{ product.url }}" class="card-product__media" aria-label="{{ product.title | escape }}">
+      {%- if product.featured_image -%}
+        <img
+          src="{{ product.featured_image | image_url: width: 600 }}"
+          alt="{{ product.featured_image.alt | default: product.title | escape }}"
+          width="300"
+          height="300"
+          loading="lazy"
+        >
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </a>
+    <a class="card-product__title label-red" href="{{ product.url }}">{{ product.title }}</a>
+    {%- if product.vendor != blank -%}
+      <div class="card-product__vendor">{{ product.vendor }}</div>
+    {%- endif -%}
+    <div class="card-product__price">
+      {% render 'price', product: product %}
+    </div>
+  </div>
+{%- else -%}
+  {%- assign ph = placeholder_index | default: 1 -%}
+  <div class="card-product">
+    <div class="card-product__media">
+      {{ 'product-' | append: ph | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+    <span class="card-product__title label-red">Termék neve</span>
+    <div class="card-product__price">
+      <span class="tag-dark">9 999 Ft</span>
+    </div>
+  </div>
+{%- endif -%}

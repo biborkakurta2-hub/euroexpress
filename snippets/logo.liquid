@@ -1,0 +1,28 @@
+{%- comment -%}
+  EuroExpress logó. Ha van feltöltött logókép a téma beállításokban, azt
+  jeleníti meg; egyébként a márka logójának hű, beépített (CSS) változatát:
+  fehér doboz fekete kerettel, piros EURO + fehér EXPRESS fekete kontúrral,
+  alatta fekete ÁRUHÁZ sáv.
+
+  Paraméter: size — 'large' a hero/jelszavas oldalhoz, egyébként fejléc méret.
+{%- endcomment -%}
+
+{%- if settings.logo != blank -%}
+  {%- assign logo_width = settings.logo_width | default: 200 -%}
+  {%- if size == 'large' -%}
+    {%- assign logo_width = logo_width | times: 1.6 | round -%}
+  {%- endif -%}
+  <img
+    src="{{ settings.logo | image_url: width: 640 }}"
+    alt="{{ shop.name | escape }}"
+    width="{{ logo_width }}"
+    height="auto"
+    style="width: {{ logo_width }}px; height: auto;"
+    loading="eager"
+  >
+{%- else -%}
+  <span class="ee-logo{% if size == 'large' %} ee-logo--large{% endif %}">
+    <span class="ee-logo__word"><span class="ee-logo__euro">EURO</span><span class="ee-logo__express">EXPRESS</span></span>
+    <span class="ee-logo__tab">ÁRUHÁZ</span>
+  </span>
+{%- endif -%}

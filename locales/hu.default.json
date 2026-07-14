@@ -1,0 +1,66 @@
+{
+  "general": {
+    "meta": {
+      "page": "{{ page }}. oldal"
+    },
+    "404": {
+      "title": "Az oldal nem található",
+      "subtext": "A keresett oldal nem létezik vagy elköltözött."
+    },
+    "search": {
+      "search": "Keresés"
+    },
+    "pagination": {
+      "previous": "Előző",
+      "next": "Következő",
+      "label": "Lapozás"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Kosárba",
+      "sold_out": "Elfogyott",
+      "unavailable": "Nem elérhető",
+      "on_sale": "Akció",
+      "quantity": "Mennyiség",
+      "from_price": "-tól",
+      "vendor": "Gyártó"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Kosár",
+      "empty": "A kosarad üres",
+      "subtotal": "Részösszeg",
+      "checkout": "Pénztár",
+      "update": "Kosár frissítése",
+      "remove": "Eltávolítás",
+      "continue_shopping": "Vásárlás folytatása",
+      "taxes_and_shipping": "Az adók és a szállítási költség a pénztárnál kerülnek kiszámításra"
+    }
+  },
+  "templates": {
+    "contact": {
+      "form": {
+        "name": "Név",
+        "email": "E-mail",
+        "phone": "Telefonszám",
+        "message": "Üzenet",
+        "send": "Küldés",
+        "post_success": "Köszönjük az üzeneted! Hamarosan válaszolunk."
+      }
+    }
+  },
+  "newsletter": {
+    "label": "E-mail cím",
+    "success": "Sikeresen feliratkoztál a hírlevelünkre!",
+    "button_label": "Feliratkozás"
+  },
+  "shopify": {
+    "checkout": {
+      "general": {
+        "continue_button_label": "Tovább"
+      }
+    }
+  }
+}

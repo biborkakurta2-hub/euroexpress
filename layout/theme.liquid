@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_accent }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+  {%- endif -%}
+
+  <title>
+    {{- page_title -}}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {{ content_for_header }}
+
+  {%- liquid
+    assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
+    assign heading_font_bold = settings.type_heading_font | font_modify: 'weight', 'bold'
+  -%}
+  <style>
+    {{ settings.type_body_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ settings.type_heading_font | font_face: font_display: 'swap' }}
+    {{ heading_font_bold | font_face: font_display: 'swap' }}
+
+    :root {
+      --color-accent: {{ settings.color_accent }};
+      --color-dark: {{ settings.color_dark }};
+      --color-paper: {{ settings.color_paper }};
+      --color-ink: {{ settings.color_ink }};
+      --color-muted: {{ settings.color_muted }};
+      --font-body: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+      --font-heading: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    }
+  </style>
+
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+</head>
+
+<body class="template-{{ template.name | handle }}">
+  <a class="skip-link" href="#MainContent">Ugrás a tartalomra</a>
+
+  {% sections 'header-group' %}
+
+  <main id="MainContent" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  {% sections 'footer-group' %}
+
+  {{ 'global.js' | asset_url | script_tag }}
+</body>
+</html>

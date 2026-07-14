@@ -1,0 +1,41 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "show_message_note": true
+      }
+    },
+    "usp": {
+      "type": "usp-bar",
+      "blocks": {
+        "usp-1": {
+          "type": "usp",
+          "settings": {
+            "icon": "tag",
+            "title": "Nagyker árak",
+            "text": "Közvetlen beszerzés, felesleges árrés nélkül."
+          }
+        },
+        "usp-2": {
+          "type": "usp",
+          "settings": {
+            "icon": "truck",
+            "title": "Gyors szállítás",
+            "text": "Rendeld meg online, mi kiszállítjuk."
+          }
+        },
+        "usp-3": {
+          "type": "usp",
+          "settings": {
+            "icon": "chat",
+            "title": "Rendelés üzenetben",
+            "text": "Írj ránk üzenetben, és mi intézzük a rendelésed."
+          }
+        }
+      },
+      "block_order": ["usp-1", "usp-2", "usp-3"]
+    }
+  },
+  "order": ["main", "usp"]
+}

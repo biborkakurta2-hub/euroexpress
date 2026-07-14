@@ -1,0 +1,92 @@
+<div class="section-pad">
+  <div class="page-width">
+    <div class="page-title">
+      <h1>Kosár</h1>
+    </div>
+
+    {%- if cart == empty -%}
+      <div class="empty-state">
+        <h2>A kosarad üres</h2>
+        <p>Nézz körül a termékeink között — nagyker árakon!</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--red">Vásárlás folytatása</a>
+      </div>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post" id="CartForm">
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Termék</th>
+              <th>Ár</th>
+              <th>Mennyiség</th>
+              <th>Összesen</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for item in cart.items -%}
+              <tr>
+                <td>
+                  <div class="cart-item__info">
+                    <div class="cart-item__image">
+                      {%- if item.image -%}
+                        <img
+                          src="{{ item.image | image_url: width: 160 }}"
+                          alt="{{ item.image.alt | default: item.product.title | escape }}"
+                          loading="lazy"
+                        >
+                      {%- endif -%}
+                    </div>
+                    <div>
+                      <a href="{{ item.url }}" class="cart-item__title">{{ item.product.title }}</a>
+                      {%- unless item.product.has_only_default_variant -%}
+                        <div class="cart-item__variant">{{ item.variant.title }}</div>
+                      {%- endunless -%}
+                      <a href="{{ item.url_to_remove }}" class="cart-item__remove">Eltávolítás</a>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="tag-dark">{{ item.final_price | money }}</span></td>
+                <td>
+                  <div class="qty-box">
+                    <button type="button" data-qty-minus aria-label="Kevesebb">&minus;</button>
+                    <input
+                      type="number"
+                      name="updates[]"
+                      value="{{ item.quantity }}"
+                      min="0"
+                      aria-label="{{ item.product.title | escape }} mennyisége"
+                    >
+                    <button type="button" data-qty-plus aria-label="Több">+</button>
+                  </div>
+                </td>
+                <td><strong>{{ item.final_line_price | money }}</strong></td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+
+        <div class="cart-footer">
+          <div class="cart-summary">
+            <div class="cart-summary__subtotal">
+              <span>Részösszeg</span>
+              <span class="tag-dark">{{ cart.total_price | money }}</span>
+            </div>
+            <div class="cart-summary__note">
+              Az adók és a szállítási költség a pénztárnál kerülnek kiszámításra.
+            </div>
+            <div class="cart-actions">
+              <button type="submit" name="update" class="btn">Kosár frissítése</button>
+              <button type="submit" name="checkout" class="btn btn--red">Pénztár</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Kosár oldal",
+  "settings": []
+}
+{% endschema %}

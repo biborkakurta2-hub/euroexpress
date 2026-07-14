@@ -1,0 +1,97 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "title": "Minden egy helyről",
+        "subtitle": "<p>Háztartási gépek · konyhai eszközök · kerti felszerelés — egy webshopban</p>",
+        "button_label": "Vásárolj most",
+        "show_burst": true,
+        "burst_text": "Nagyker\nárak"
+      }
+    },
+    "categories": {
+      "type": "category-cards",
+      "settings": {
+        "title": "Miben segíthetünk?"
+      },
+      "blocks": {
+        "card-1": {
+          "type": "card",
+          "settings": {
+            "title": "Háztartási gépek",
+            "text": "Mixerek, vízforralók, botmixerek — a napi rutin gyorsabban és egyszerűbben.",
+            "tag": "Nagyker ár",
+            "icon": "appliance"
+          }
+        },
+        "card-2": {
+          "type": "card",
+          "settings": {
+            "title": "Konyhai eszközök",
+            "text": "Multifunkciós gépek, darálók és praktikus kiegészítők — a konyhád felszerelve.",
+            "tag": "Nagyker ár",
+            "icon": "kitchen"
+          }
+        },
+        "card-3": {
+          "type": "card",
+          "settings": {
+            "title": "Kerti felszerelés",
+            "text": "Szerszámok, locsolók és praktikus segítők a kertedhez, udvarodhoz.",
+            "tag": "Nagyker ár",
+            "icon": "garden"
+          }
+        }
+      },
+      "block_order": ["card-1", "card-2", "card-3"]
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Katalógus ajánlatunk",
+        "subtitle": "Nagyker árak, közvetlen beszerzésből — felesleges árrés nélkül.",
+        "limit": 8,
+        "show_view_all": true
+      }
+    },
+    "usp": {
+      "type": "usp-bar",
+      "blocks": {
+        "usp-1": {
+          "type": "usp",
+          "settings": {
+            "icon": "tag",
+            "title": "Nagyker árak",
+            "text": "Közvetlen beszerzés, felesleges árrés nélkül. Ugyanaz a minőség, jobb áron."
+          }
+        },
+        "usp-2": {
+          "type": "usp",
+          "settings": {
+            "icon": "truck",
+            "title": "Gyors szállítás",
+            "text": "Rendeld meg online, mi pedig kiszállítjuk gyorsan és megbízhatóan."
+          }
+        },
+        "usp-3": {
+          "type": "usp",
+          "settings": {
+            "icon": "chat",
+            "title": "Rendelés üzenetben",
+            "text": "Nincs bonyodalom — írj ránk üzenetben, és mi intézzük a rendelésed."
+          }
+        }
+      },
+      "block_order": ["usp-1", "usp-2", "usp-3"]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "title": "Ne maradj le az akciókról!",
+        "text": "Iratkozz fel, és elsőként értesülhetsz a nagyker árú újdonságokról és katalógus-ajánlatokról."
+      }
+    }
+  },
+  "order": ["hero", "categories", "featured", "usp", "newsletter"]
+}
