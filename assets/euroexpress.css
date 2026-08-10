@@ -1,0 +1,536 @@
+/* ==========================================================================
+   EUROEXPRESS ÁRUHÁZ — arculati réteg a Dawn téma fölött
+   Layout/UX: otto.de háztartási aloldal · Arculat: EuroExpress (piros/fekete/fehér)
+   Ez a fájl a base.css UTÁN töltődik be, így felülírja a Dawn alapokat.
+   ========================================================================== */
+
+:root {
+  --ee-red: #E30613;        /* fő piros — CTA, címkék, felső sáv */
+  --ee-red-dark: #B70410;   /* hover / árnyék */
+  --ee-black: #111111;      /* fejlécek, ártáblák, szöveg */
+  --ee-white: #FFFFFF;
+  --ee-bg: #F2F2F2;         /* oldal háttér (világosszürke, mint az Ottón) */
+  --ee-card: #FFFFFF;       /* termékkártya háttér */
+  --ee-line: #E3E3E3;       /* elválasztó vonalak */
+  --ee-muted: #6B6B6B;      /* másodlagos szöveg */
+  --ee-sale: #E30613;       /* akciós ár színe */
+
+  --ee-radius: 10px;
+  --ee-radius-sm: 6px;
+  --ee-radius-pill: 999px;
+  --ee-shadow: 0 6px 18px rgba(17, 17, 17, 0.08);
+  --ee-shadow-hover: 0 10px 26px rgba(17, 17, 17, 0.16);
+  --ee-page-max: 1400px;
+}
+
+/* --------------------------------------------------------------------------
+   Alaptipográfia — vastag, nagybetűs display címsorok
+   -------------------------------------------------------------------------- */
+body {
+  background-color: var(--ee-bg);
+}
+
+h1, h2, h3, .h0, .h1, .h2, .h3,
+.ee-display {
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.ee-display {
+  font-family: var(--font-heading-family);
+  line-height: 0.98;
+}
+
+/* Otto-jellegű keskenyebb, sűrűbb szekciócímek */
+.ee-section-title {
+  font-family: var(--font-heading-family);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(1.4rem, 1rem + 1.6vw, 2.2rem);
+  letter-spacing: 0.01em;
+  margin: 0 0 0.6em;
+  color: var(--ee-black);
+}
+.ee-section-title .ee-title-accent { color: var(--ee-red); }
+
+/* --------------------------------------------------------------------------
+   Újrahasználható komponensek
+   -------------------------------------------------------------------------- */
+
+/* Piros kategória-címke (snippets/ee-label.liquid) */
+.ee-label {
+  display: inline-block;
+  background: var(--ee-red);
+  color: var(--ee-white);
+  font-family: var(--font-heading-family);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.72rem;
+  line-height: 1;
+  padding: 0.42em 0.7em;
+  border-radius: var(--ee-radius-sm);
+  white-space: nowrap;
+}
+.ee-label--black { background: var(--ee-black); }
+.ee-label--new { background: var(--ee-black); }
+
+/* Fekete ártábla pill (snippets/ee-price-tag.liquid) */
+.ee-price-tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25em;
+  background: var(--ee-black);
+  color: var(--ee-white);
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: 0.5em 0.85em;
+  border-radius: var(--ee-radius-pill);
+}
+.ee-price-tag--sale { background: var(--ee-red); }
+.ee-price-tag__cur { font-size: 0.72em; font-weight: 700; opacity: 0.85; }
+
+/* Kedvezmény % badge */
+.ee-discount {
+  display: inline-block;
+  background: var(--ee-red);
+  color: var(--ee-white);
+  font-weight: 800;
+  font-size: 0.8rem;
+  line-height: 1;
+  padding: 0.35em 0.5em;
+  border-radius: var(--ee-radius-sm);
+}
+
+/* Starburst badge (snippets/ee-starburst.liquid) */
+.ee-starburst {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  color: var(--ee-white);
+  text-align: center;
+  transform: rotate(-8deg);
+}
+.ee-starburst svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ee-starburst__text {
+  position: relative;
+  font-family: var(--font-heading-family);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  padding: 0 10px;
+}
+
+/* EuroExpress gombok — fekete alap, piros hover (és fordítva) */
+.ee-btn,
+.button.ee-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  background: var(--ee-black);
+  color: var(--ee-white);
+  font-family: var(--font-heading-family);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  padding: 0.85em 1.6em;
+  border: 0;
+  border-radius: var(--ee-radius-sm);
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+.ee-btn:hover { background: var(--ee-red); transform: translateY(-1px); color: var(--ee-white); }
+.ee-btn--red { background: var(--ee-red); }
+.ee-btn--red:hover { background: var(--ee-black); }
+
+/* --------------------------------------------------------------------------
+   HEADER — felső piros sáv, logó, kereső, kosár, mega-menü
+   -------------------------------------------------------------------------- */
+.section-header { position: relative; }
+.header-wrapper {
+  background: var(--ee-red) !important;
+  border-bottom: 0 !important;
+  color: var(--ee-white);
+}
+.header-wrapper--border-bottom { border-bottom: 0 !important; }
+.header {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.header__heading-link,
+.header__heading-logo { filter: none; }
+/* Ikonok és menü szövege fehér a piros sávon */
+.header__icon,
+.header__icon .icon,
+.header__active-menu-item,
+.header__menu-item,
+.header__menu-item span,
+.header .list-menu__item--link {
+  color: var(--ee-white) !important;
+}
+.header__icon:hover .icon { opacity: 0.8; }
+.header__icon .icon { width: 24px; height: 24px; }
+/* Kosárszámláló buborék fekete */
+.cart-count-bubble {
+  background: var(--ee-black) !important;
+  color: var(--ee-white) !important;
+}
+
+/* Kereső mező a fejlécben — fehér pill */
+.header__search { flex: 1 1 auto; max-width: 620px; margin: 0 24px; }
+.header__search .search__input.field__input {
+  background: var(--ee-white);
+  border-radius: var(--ee-radius-pill);
+  border: 0;
+  color: var(--ee-black);
+}
+.header__search .search__button .icon { color: var(--ee-black); }
+.header__search .field:after,
+.header__search .field:before { display: none; }
+
+/* Alsó kategóriamenü sáv (fehér háttéren fekete linkek) */
+.ee-nav-bar {
+  background: var(--ee-white);
+  border-bottom: 3px solid var(--ee-red);
+}
+.ee-nav-bar .ee-nav-inner {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 6px 0;
+}
+.ee-nav-bar a {
+  font-family: var(--font-heading-family);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  color: var(--ee-black);
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: var(--ee-radius-sm);
+}
+.ee-nav-bar a:hover { background: var(--ee-bg); color: var(--ee-red); }
+.ee-nav-bar a.ee-nav-sale { color: var(--ee-red); }
+
+/* Mega-menü fejléce marad Dawn-alapú, csak a felső link piros hoverrel */
+.header__menu-item:hover span,
+.header__menu-item:hover .icon-caret { color: rgba(255,255,255,0.85) !important; }
+
+/* --------------------------------------------------------------------------
+   HERO — piros blokk display címmel + starburst + CTA
+   -------------------------------------------------------------------------- */
+.ee-hero { background: transparent; }
+.ee-hero__inner {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: stretch;
+  gap: 0;
+  border-radius: var(--ee-radius);
+  overflow: hidden;
+  box-shadow: var(--ee-shadow);
+}
+.ee-hero__copy {
+  background: var(--ee-red);
+  color: var(--ee-white);
+  padding: clamp(28px, 4vw, 64px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+}
+.ee-hero__title {
+  font-family: var(--font-heading-family);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.96;
+  letter-spacing: -0.01em;
+  font-size: clamp(2rem, 1rem + 4vw, 4rem);
+  margin: 0;
+}
+.ee-hero__subtitle { font-size: clamp(1rem, 0.9rem + 0.5vw, 1.3rem); max-width: 34ch; opacity: 0.95; }
+.ee-hero__cta { align-self: flex-start; }
+.ee-hero__media { background: var(--ee-black); position: relative; min-height: 320px; }
+.ee-hero__media img { width: 100%; height: 100%; object-fit: cover; }
+.ee-hero__starburst { position: absolute; top: 18px; right: 18px; z-index: 2; }
+
+@media (max-width: 749px) {
+  .ee-hero__inner { grid-template-columns: 1fr; }
+  .ee-hero__media { min-height: 220px; }
+}
+
+/* --------------------------------------------------------------------------
+   KATEGÓRIA CSEMPÉK
+   -------------------------------------------------------------------------- */
+.ee-cat-tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.ee-cat-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 200px;
+  padding: 18px;
+  border-radius: var(--ee-radius);
+  overflow: hidden;
+  background: var(--ee-black);
+  color: var(--ee-white);
+  text-decoration: none;
+  box-shadow: var(--ee-shadow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.ee-cat-tile:hover { transform: translateY(-3px); box-shadow: var(--ee-shadow-hover); }
+.ee-cat-tile img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; opacity: 0.72;
+}
+.ee-cat-tile::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.7) 100%);
+}
+.ee-cat-tile > * { position: relative; z-index: 1; }
+.ee-cat-tile .ee-label { margin-bottom: 8px; align-self: flex-start; }
+.ee-cat-tile__name {
+  font-family: var(--font-heading-family);
+  font-weight: 800; text-transform: uppercase; font-size: 1.05rem; line-height: 1.05;
+}
+@media (max-width: 989px) { .ee-cat-tiles { grid-template-columns: repeat(2, 1fr); } }
+
+/* --------------------------------------------------------------------------
+   ELŐNYÖK (USP) SÁV
+   -------------------------------------------------------------------------- */
+.ee-usp {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  background: var(--ee-black);
+  border-radius: var(--ee-radius);
+  padding: 22px;
+}
+.ee-usp__item { display: flex; align-items: center; gap: 12px; color: var(--ee-white); }
+.ee-usp__icon { width: 34px; height: 34px; flex: 0 0 auto; color: var(--ee-red); }
+.ee-usp__icon svg { width: 100%; height: 100%; }
+.ee-usp__text strong { display: block; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.02em; }
+.ee-usp__text span { font-size: 0.82rem; color: rgba(255,255,255,0.7); }
+@media (max-width: 749px) { .ee-usp { grid-template-columns: 1fr 1fr; } }
+
+/* --------------------------------------------------------------------------
+   KOLLEKCIÓ OLDAL — Otto-stílus (szűrők balra, sűrű rács, alkat. csempék)
+   -------------------------------------------------------------------------- */
+/* Kollekció fejléc */
+.ee-collection-head { padding: 24px 0 6px; }
+.ee-breadcrumb { font-size: 0.8rem; color: var(--ee-muted); margin-bottom: 10px; }
+.ee-breadcrumb a { color: var(--ee-muted); text-decoration: none; }
+.ee-breadcrumb a:hover { color: var(--ee-red); }
+.ee-collection-head h1 { color: var(--ee-black); margin: 0; }
+.ee-collection-intro { color: var(--ee-muted); max-width: 70ch; margin-top: 8px; }
+
+/* Alkategória-csempék sora (vízszintesen görgethető) */
+.ee-subcats {
+  display: flex; gap: 12px; overflow-x: auto; padding: 14px 0 6px;
+  scrollbar-width: thin;
+}
+.ee-subcat {
+  flex: 0 0 auto; width: 118px; text-align: center; text-decoration: none;
+  color: var(--ee-black);
+}
+.ee-subcat__img {
+  width: 96px; height: 96px; margin: 0 auto 8px; border-radius: 50%;
+  overflow: hidden; background: var(--ee-white); border: 1px solid var(--ee-line);
+  display: grid; place-items: center;
+}
+.ee-subcat__img img { width: 100%; height: 100%; object-fit: cover; }
+.ee-subcat span { font-size: 0.78rem; font-weight: 600; }
+.ee-subcat:hover span { color: var(--ee-red); }
+
+/* Eszköztár: terméktszám + rendezés */
+.ee-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--ee-line);
+  flex-wrap: wrap;
+}
+.ee-toolbar__count { font-weight: 700; color: var(--ee-black); }
+
+/* Dawn facets → Otto elrendezés: bal oszlop + rács */
+.ee-collection-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
+  align-items: start;
+  padding-top: 18px;
+}
+@media (max-width: 989px) { .ee-collection-layout { grid-template-columns: 1fr; } }
+
+/* Bal szűrő sáv kártyás megjelenés */
+.facets__form,
+.ee-facets {
+  background: var(--ee-white);
+  border: 1px solid var(--ee-line);
+  border-radius: var(--ee-radius);
+  padding: 8px 16px;
+}
+.facets__heading,
+.facets__summary { color: var(--ee-black); }
+.facets__price .field__input:focus,
+.facets .field__input:focus { border-color: var(--ee-red); }
+
+/* Sűrű termékrács */
+#product-grid,
+.ee-product-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+@media (max-width: 989px) { #product-grid, .ee-product-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 749px)  { #product-grid, .ee-product-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* Számozott lapozás Otto-stílus */
+.pagination__list .pagination__item {
+  min-width: 40px; height: 40px; display: grid; place-items: center;
+  border-radius: var(--ee-radius-sm);
+}
+.pagination__list .pagination__item--current {
+  background: var(--ee-red); color: var(--ee-white);
+}
+.pagination__list .pagination__item:hover:not(.pagination__item--current) {
+  background: var(--ee-bg);
+}
+
+/* SEO vásárlási útmutató blokk a lista alján */
+.ee-buying-guide {
+  background: var(--ee-white);
+  border: 1px solid var(--ee-line);
+  border-radius: var(--ee-radius);
+  padding: 24px;
+  margin-top: 28px;
+}
+.ee-buying-guide h2 { color: var(--ee-black); margin-bottom: 10px; }
+.ee-buying-guide details { border-top: 1px solid var(--ee-line); padding: 10px 0; }
+.ee-buying-guide summary { cursor: pointer; font-weight: 700; }
+
+/* --------------------------------------------------------------------------
+   TERMÉKKÁRTYA — EuroExpress arculat (badge, akciós ár, Ft)
+   -------------------------------------------------------------------------- */
+.card-wrapper { color: var(--ee-black); }
+.card { background: var(--ee-card); }
+.card--standard .card__inner { border-radius: var(--ee-radius); }
+.card__information { padding: 12px 12px 14px; }
+
+/* Márka kis szürke felirat */
+.card__information .caption-with-letter-spacing,
+.card .card__vendor {
+  color: var(--ee-muted); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.04em;
+}
+/* Terméknév max 2 sor */
+.card__heading a {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; font-weight: 700; text-transform: none; color: var(--ee-black);
+  font-size: 0.92rem; line-height: 1.25;
+}
+/* Badge bal felül piros */
+.card__badge .badge {
+  background: var(--ee-red) !important;
+  color: var(--ee-white) !important;
+  border: 0 !important;
+  font-family: var(--font-heading-family);
+  font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em;
+  border-radius: var(--ee-radius-sm);
+}
+/* Akciós ár pirossal, eredeti áthúzva */
+.price--on-sale .price__sale .price-item--sale,
+.price__sale .price-item--sale {
+  color: var(--ee-sale) !important; font-weight: 800;
+}
+.price__sale .price-item--regular { color: var(--ee-muted); text-decoration: line-through; }
+.price .price-item--regular { font-weight: 800; color: var(--ee-black); }
+/* Kedvezmény % pötty a kártyán */
+.price__badge-sale.ee-discount { background: var(--ee-red); }
+
+/* Gyors "Kosárba" gomb */
+.card .quick-add__submit {
+  background: var(--ee-black); color: var(--ee-white); border: 0; font-weight: 800;
+  text-transform: uppercase;
+}
+.card .quick-add__submit:hover:not([disabled]) { background: var(--ee-red); }
+
+/* --------------------------------------------------------------------------
+   TERMÉKOLDAL
+   -------------------------------------------------------------------------- */
+.product__title h1 { color: var(--ee-black); }
+.product .price .price-item--regular { color: var(--ee-black); }
+.product-form__submit {
+  background: var(--ee-black) !important;
+  color: var(--ee-white) !important;
+  font-family: var(--font-heading-family);
+  font-weight: 800 !important; text-transform: uppercase; letter-spacing: 0.05em;
+  border: 0 !important; border-radius: var(--ee-radius-sm) !important;
+}
+.product-form__submit:hover:not([disabled]) { background: var(--ee-red) !important; }
+
+/* Bizalmi ikonsáv a termékoldalon */
+.ee-trust {
+  display: flex; flex-wrap: wrap; gap: 18px; padding: 16px 0; margin-top: 8px;
+  border-top: 1px solid var(--ee-line); border-bottom: 1px solid var(--ee-line);
+}
+.ee-trust__item { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--ee-black); }
+.ee-trust__item .icon { width: 26px; height: 26px; color: var(--ee-red); }
+
+/* Kapcsolat / rendelés üzenetben doboz */
+.ee-contact-box {
+  background: var(--ee-bg); border-radius: var(--ee-radius); padding: 16px 18px; margin-top: 16px;
+  font-size: 0.9rem;
+}
+.ee-contact-box a { color: var(--ee-red); font-weight: 700; }
+
+/* --------------------------------------------------------------------------
+   FOOTER — alsó piros sáv, VÁSÁROLJ MOST CTA, kapcsolat
+   -------------------------------------------------------------------------- */
+.ee-footer-cta {
+  background: var(--ee-red);
+  color: var(--ee-white);
+  border-radius: var(--ee-radius);
+  padding: 26px clamp(20px, 4vw, 48px);
+  display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.ee-footer-cta__title {
+  font-family: var(--font-heading-family);
+  font-weight: 800; text-transform: uppercase; font-size: clamp(1.2rem, 1rem + 1vw, 1.8rem);
+  margin: 0;
+}
+.ee-footer-cta__actions { display: flex; align-items: center; gap: 12px; }
+.ee-footer-cta__icon {
+  width: 46px; height: 46px; display: grid; place-items: center;
+  background: var(--ee-white); color: var(--ee-red); border-radius: 50%;
+}
+.ee-footer-cta__icon .icon { width: 22px; height: 22px; }
+
+.footer { background: var(--ee-black); color: var(--ee-white); }
+.footer .footer__content-top,
+.footer .footer__content-bottom { border-color: rgba(255,255,255,0.12); }
+.footer a { color: rgba(255,255,255,0.85); }
+.footer a:hover { color: var(--ee-white); }
+.footer .footer-block__heading { color: var(--ee-white); text-transform: uppercase; }
+
+/* Fizetési ikonok sor */
+.ee-payments { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.ee-payments img, .ee-payments svg { height: 26px; }
+
+/* --------------------------------------------------------------------------
+   Segéd
+   -------------------------------------------------------------------------- */
+.ee-container { max-width: var(--ee-page-max); margin: 0 auto; padding: 0 24px; }
+.ee-mt { margin-top: 28px; }

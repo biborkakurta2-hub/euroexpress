@@ -1,97 +1,75 @@
 {
   "sections": {
-    "hero": {
-      "type": "hero",
-      "settings": {
-        "title": "Minden egy helyről",
-        "subtitle": "<p>Háztartási gépek · konyhai eszközök · kerti felszerelés — egy webshopban</p>",
-        "button_label": "Vásárolj most",
-        "show_burst": true,
-        "burst_text": "Nagyker\nárak"
-      }
-    },
-    "categories": {
-      "type": "category-cards",
-      "settings": {
-        "title": "Miben segíthetünk?"
-      },
+    "image_banner": {
+      "type": "image-banner",
       "blocks": {
-        "card-1": {
-          "type": "card",
+        "heading": {
+          "type": "heading",
           "settings": {
-            "title": "Háztartási gépek",
-            "text": "Mixerek, vízforralók, botmixerek — a napi rutin gyorsabban és egyszerűbben.",
-            "tag": "Nagyker ár",
-            "icon": "appliance"
+            "heading": "Browse our latest products",
+            "heading_size": "h0"
           }
         },
-        "card-2": {
-          "type": "card",
+        "button": {
+          "type": "buttons",
           "settings": {
-            "title": "Konyhai eszközök",
-            "text": "Multifunkciós gépek, darálók és praktikus kiegészítők — a konyhád felszerelve.",
-            "tag": "Nagyker ár",
-            "icon": "kitchen"
-          }
-        },
-        "card-3": {
-          "type": "card",
-          "settings": {
-            "title": "Kerti felszerelés",
-            "text": "Szerszámok, locsolók és praktikus segítők a kertedhez, udvarodhoz.",
-            "tag": "Nagyker ár",
-            "icon": "garden"
+            "button_label_1": "Shop all",
+            "button_link_1": "shopify://collections/all",
+            "button_style_secondary_1": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
           }
         }
       },
-      "block_order": ["card-1", "card-2", "card-3"]
+      "block_order": [
+        "heading",
+        "button"
+      ],
+      "settings": {
+        "image_overlay_opacity": 40,
+        "image_height": "large",
+        "desktop_content_position": "bottom-center",
+        "show_text_box": false,
+        "image_behavior": "none",
+        "desktop_content_alignment": "center",
+        "color_scheme": "scheme-3",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
     },
-    "featured": {
+    "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Katalógus ajánlatunk",
-        "subtitle": "Nagyker árak, közvetlen beszerzésből — felesleges árrés nélkül.",
-        "limit": 8,
-        "show_view_all": true
-      }
-    },
-    "usp": {
-      "type": "usp-bar",
-      "blocks": {
-        "usp-1": {
-          "type": "usp",
-          "settings": {
-            "icon": "tag",
-            "title": "Nagyker árak",
-            "text": "Közvetlen beszerzés, felesleges árrés nélkül. Ugyanaz a minőség, jobb áron."
-          }
-        },
-        "usp-2": {
-          "type": "usp",
-          "settings": {
-            "icon": "truck",
-            "title": "Gyors szállítás",
-            "text": "Rendeld meg online, mi pedig kiszállítjuk gyorsan és megbízhatóan."
-          }
-        },
-        "usp-3": {
-          "type": "usp",
-          "settings": {
-            "icon": "chat",
-            "title": "Rendelés üzenetben",
-            "text": "Nincs bonyodalom — írj ránk üzenetben, és mi intézzük a rendelésed."
-          }
-        }
-      },
-      "block_order": ["usp-1", "usp-2", "usp-3"]
-    },
-    "newsletter": {
-      "type": "newsletter",
-      "settings": {
-        "title": "Ne maradj le az akciókról!",
-        "text": "Iratkozz fel, és elsőként értesülhetsz a nagyker árú újdonságokról és katalógus-ajánlatokról."
+        "title": "Featured products",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "all",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "swipe_on_mobile": false,
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "padding_top": 44,
+        "padding_bottom": 36
       }
     }
   },
-  "order": ["hero", "categories", "featured", "usp", "newsletter"]
+  "order": [
+    "image_banner",
+    "featured_collection"
+  ]
 }

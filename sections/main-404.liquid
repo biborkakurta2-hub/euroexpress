@@ -1,18 +1,23 @@
-<div class="section-pad">
-  <div class="page-width">
-    <div class="empty-state">
-      <span class="burst" style="position: static; display: inline-flex; margin-bottom: 26px;"><span>404</span></span>
-      <h2>Az oldal nem található</h2>
-      <p>A keresett oldal nem létezik vagy elköltözött. Nézz körül a termékeink között!</p>
-      <a href="{{ routes.root_url }}" class="btn">Vissza a főoldalra</a>
-      <a href="{{ routes.all_products_collection_url }}" class="btn btn--red" style="margin-left: 10px;">Összes termék</a>
-    </div>
-  </div>
-</div>
+<style type="text/css">
+  .template-404 .title + * {
+    margin-top: 1rem;
+  }
 
-{% schema %}
-{
-  "name": "404 oldal",
-  "settings": []
-}
-{% endschema %}
+  @media screen and (min-width: 750px) {
+    .template-404 .title + * {
+      margin-top: 2rem;
+    }
+  }
+</style>
+
+<div class="template-404 page-width page-margin center">
+  <p>
+    {{ 'templates.404.subtext' | t }}
+  </p>
+  <h1 class="title">
+    {{ 'templates.404.title' | t }}
+  </h1>
+  <a href="{{ routes.all_products_collection_url }}" class="button">
+    {{ 'general.continue_shopping' | t }}
+  </a>
+</div>

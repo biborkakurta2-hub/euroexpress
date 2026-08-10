@@ -1,0 +1,12 @@
+{%- comment -%}
+  Fekete (vagy piros akciós) ártábla pill — magyar Ft formátum, szóközös ezres tagolás.
+  Paraméterek:
+    price    — összeg fillérben/centben (Shopify money integer). Kötelező.
+    sale     — true esetén piros akciós pill
+{%- endcomment -%}
+{%- liquid
+  assign ee_forint = price | money_without_currency | replace: ',00', '' | replace: '.', ' ' | replace: ',', ' '
+-%}
+<span class="ee-price-tag{% if sale %} ee-price-tag--sale{% endif %}">
+  {{ ee_forint }}<span class="ee-price-tag__cur">Ft</span>
+</span>
