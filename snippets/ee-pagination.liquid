@@ -1,0 +1,26 @@
+{%- comment -%}
+  Számozott lapozó (paginate objektummal).
+  Használat: {% render 'ee-pagination', paginate: paginate %}
+{%- endcomment -%}
+
+{%- if paginate.pages > 1 -%}
+  <nav class="ee-pagination" aria-label="Lapozás">
+    {%- if paginate.previous -%}
+      <a href="{{ paginate.previous.url }}" rel="prev" aria-label="Előző oldal">‹ Előző</a>
+    {%- endif -%}
+
+    {%- for part in paginate.parts -%}
+      {%- if part.is_link -%}
+        <a href="{{ part.url }}" aria-label="{{ part.title }}. oldal">{{ part.title }}</a>
+      {%- elsif part.title == '&hellip;' -%}
+        <span aria-hidden="true">…</span>
+      {%- else -%}
+        <span class="is-current" aria-current="page">{{ part.title }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if paginate.next -%}
+      <a href="{{ paginate.next.url }}" rel="next" aria-label="Következő oldal">Következő ›</a>
+    {%- endif -%}
+  </nav>
+{%- endif -%}

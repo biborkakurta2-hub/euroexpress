@@ -5,13 +5,16 @@
     "announcement": {
       "type": "announcement-bar",
       "settings": {
-        "text": "Nagyker árak minden termékre — rendelj a webshopban vagy üzenetben!"
+        "text": "Nagyker árak minden termékre — gyors kiszállítás, utánvét lehetséges!"
       }
     },
     "header": {
       "type": "header",
       "settings": {
-        "menu": "main-menu"
+        "menu": "main-menu",
+        "mega_promo_text": "Nagyker árak — minden héten új akciók!",
+        "mega_promo_label": "Akciók",
+        "mega_promo_link": "/collections/akcio"
       }
     }
   },

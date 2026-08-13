@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="hu">
+<html lang="{{ request.locale.iso_code | default: 'hu' }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,28 +21,46 @@
 
   {{ content_for_header }}
 
-  {%- liquid
-    assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
-    assign heading_font_bold = settings.type_heading_font | font_modify: 'weight', 'bold'
-  -%}
-  <style>
-    {{ settings.type_body_font | font_face: font_display: 'swap' }}
-    {{ body_font_bold | font_face: font_display: 'swap' }}
-    {{ settings.type_heading_font | font_face: font_display: 'swap' }}
-    {{ heading_font_bold | font_face: font_display: 'swap' }}
+  {%- comment -%}
+    Display betűtípus: Montserrat 700/800/900 (vastag, kissé condensed hatású
+    nagybetűs címsorokhoz), törzsszöveg: Inter. A Google Fonts betöltése
+    preconnecttel és font-display: swap-pal történik.
+  {%- endcomment -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap"
+    media="print"
+    onload="this.media='all'"
+  >
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap">
+  </noscript>
 
+  {{ 'euroexpress-tokens.css' | asset_url | stylesheet_tag }}
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+  {{ 'euroexpress.css' | asset_url | stylesheet_tag }}
+
+  {%- comment -%} A téma beállításai felülírják az alapértelmezett tokeneket. {%- endcomment -%}
+  <style>
     :root {
-      --color-accent: {{ settings.color_accent }};
-      --color-dark: {{ settings.color_dark }};
-      --color-paper: {{ settings.color_paper }};
-      --color-ink: {{ settings.color_ink }};
-      --color-muted: {{ settings.color_muted }};
-      --font-body: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
-      --font-heading: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+      --ee-red: {{ settings.color_accent | default: '#E30613' }};
+      --ee-red-dark: {{ settings.color_accent_dark | default: '#B70410' }};
+      --ee-black: {{ settings.color_dark | default: '#111111' }};
+      --ee-bg: {{ settings.color_paper | default: '#F2F2F2' }};
+      --ee-card: {{ settings.color_card | default: '#FFFFFF' }};
+      --ee-line: {{ settings.color_line | default: '#E3E3E3' }};
+      --ee-muted: {{ settings.color_muted | default: '#6B6B6B' }};
+      --ee-sale: {{ settings.color_sale | default: '#E30613' }};
+
+      --color-accent: var(--ee-red);
+      --color-dark: var(--ee-black);
+      --color-paper: var(--ee-bg);
+      --color-ink: {{ settings.color_ink | default: '#111111' }};
+      --color-muted: var(--ee-muted);
     }
   </style>
-
-  {{ 'base.css' | asset_url | stylesheet_tag }}
 </head>
 
 <body class="template-{{ template.name | handle }}">
@@ -57,5 +75,6 @@
   {% sections 'footer-group' %}
 
   {{ 'global.js' | asset_url | script_tag }}
+  {{ 'euroexpress.js' | asset_url | script_tag }}
 </body>
 </html>

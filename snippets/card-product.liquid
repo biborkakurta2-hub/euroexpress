@@ -1,42 +1,167 @@
 {%- comment -%}
-  Termékkártya a brosúra katalógus-stílusában:
-  fehér kép-doboz, piros névcímke, fekete árcédula.
-  Paraméter: product — a termék objektum (üres esetén placeholder).
-  Opcionális: placeholder_index — placeholder kép sorszáma (1-6).
+  EuroExpress termékkártya.
+
+  Két megjelenés:
+    style: 'shop'    — webshop kártya (alapértelmezés, kollekció / kereső /
+                       kapcsolódó termékek): fehér kártya, jelvények, gyártó,
+                       kétsoros név, akciós ár blokk, gyors „Kosárba” gomb.
+    style: 'catalog' — katalógus kártya (kezdőlap „Kiemelt akciók” rács):
+                       piros kategória-címke + fekete ártábla.
+
+  Paraméterek:
+    product           — a termék objektum (üres esetén placeholder kártya)
+    style             — 'shop' | 'catalog'
+    placeholder_index — placeholder kép sorszáma (1-6), csak üres terméknél
+    show_quick_add    — gyors kosárba gomb (alap: true a 'shop' stílusnál)
 {%- endcomment -%}
 
+{%- liquid
+  assign ee_card_style = style | default: 'shop'
+  assign ee_quick_add = true
+  if show_quick_add == false or ee_card_style == 'catalog'
+    assign ee_quick_add = false
+  endif
+-%}
+
 {%- if product != blank -%}
-  <div class="card-product">
-    <a href="{{ product.url }}" class="card-product__media" aria-label="{{ product.title | escape }}">
-      {%- if product.featured_image -%}
-        <img
-          src="{{ product.featured_image | image_url: width: 600 }}"
-          alt="{{ product.featured_image.alt | default: product.title | escape }}"
-          width="300"
-          height="300"
-          loading="lazy"
-        >
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+  {%- liquid
+    assign ee_variant = product.selected_or_first_available_variant
+    assign ee_price = ee_variant.price | default: product.price
+    assign ee_compare = ee_variant.compare_at_price
+    assign ee_on_sale = false
+    if ee_compare != blank and ee_compare > ee_price
+      assign ee_on_sale = true
+    endif
+    assign ee_is_new = false
+    if product.tags contains 'új' or product.tags contains 'uj' or product.tags contains 'Új'
+      assign ee_is_new = true
+    endif
+    assign ee_category = ''
+    if product.type != blank
+      assign ee_category = product.type
+    elsif product.collections.first != blank
+      assign ee_category = product.collections.first.title
+    endif
+  -%}
+
+  {%- if ee_card_style == 'catalog' -%}
+
+    <div class="ee-card ee-card--catalog">
+      <a href="{{ product.url }}" class="ee-card__media" aria-label="{{ product.title | escape }}">
+        {%- if product.featured_image -%}
+          <img
+            src="{{ product.featured_image | image_url: width: 600 }}"
+            srcset="{{ product.featured_image | image_url: width: 300 }} 300w, {{ product.featured_image | image_url: width: 600 }} 600w"
+            sizes="(min-width: 990px) 300px, 45vw"
+            alt="{{ product.featured_image.alt | default: product.title | escape }}"
+            width="300"
+            height="300"
+            loading="lazy"
+          >
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </a>
+
+      {%- if ee_category != blank -%}
+        <div class="ee-card__cat">{% render 'ee-label', text: ee_category, size: 'sm' %}</div>
       {%- endif -%}
-    </a>
-    <a class="card-product__title label-red" href="{{ product.url }}">{{ product.title }}</a>
-    {%- if product.vendor != blank -%}
-      <div class="card-product__vendor">{{ product.vendor }}</div>
-    {%- endif -%}
-    <div class="card-product__price">
-      {% render 'price', product: product %}
+
+      <a class="ee-card__title" href="{{ product.url }}">{{ product.title }}</a>
+
+      <div class="ee-card__pricerow">
+        {%- render 'ee-price-tag',
+          price: ee_price,
+          compare_at: ee_compare,
+          style: 'tag',
+          varies: product.price_varies
+        -%}
+      </div>
     </div>
-  </div>
+
+  {%- else -%}
+
+    <div class="ee-card">
+      <div class="ee-card__badges">
+        {%- if product.available == false -%}
+          {% render 'ee-label', text: 'Elfogyott', theme: 'dark', size: 'sm' %}
+        {%- elsif ee_on_sale -%}
+          {% render 'ee-label', text: 'Akció', size: 'sm' %}
+        {%- endif -%}
+        {%- if ee_is_new -%}
+          {% render 'ee-label', text: 'Új', theme: 'dark', size: 'sm' %}
+        {%- endif -%}
+      </div>
+
+      <a href="{{ product.url }}" class="ee-card__media" aria-label="{{ product.title | escape }}">
+        {%- if product.featured_image -%}
+          <img
+            src="{{ product.featured_image | image_url: width: 600 }}"
+            srcset="{{ product.featured_image | image_url: width: 300 }} 300w, {{ product.featured_image | image_url: width: 600 }} 600w"
+            sizes="(min-width: 990px) 280px, 45vw"
+            alt="{{ product.featured_image.alt | default: product.title | escape }}"
+            width="300"
+            height="300"
+            loading="lazy"
+          >
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+
+        {%- if ee_quick_add and product.available -%}
+          <span class="ee-card__quick-slot" aria-hidden="true"></span>
+        {%- endif -%}
+      </a>
+
+      <div class="ee-card__body">
+        {%- if product.vendor != blank -%}
+          <div class="ee-card__vendor">{{ product.vendor }}</div>
+        {%- endif -%}
+
+        <a class="ee-card__title" href="{{ product.url }}">{{ product.title }}</a>
+
+        <div class="ee-card__price">
+          {%- render 'ee-price-tag',
+            price: ee_price,
+            compare_at: ee_compare,
+            varies: product.price_varies
+          -%}
+        </div>
+
+        {%- if ee_quick_add -%}
+          <div class="ee-card__quick">
+            {%- if product.available -%}
+              {%- form 'product', product, id: null, class: 'ee-card__quick-form' -%}
+                <input type="hidden" name="id" value="{{ ee_variant.id }}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" name="add" class="ee-btn ee-btn--dark ee-btn--sm ee-btn--full">
+                  Kosárba
+                </button>
+              {%- endform -%}
+            {%- else -%}
+              <span class="ee-btn ee-btn--dark ee-btn--sm ee-btn--full ee-btn--disabled">Elfogyott</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+  {%- endif -%}
+
 {%- else -%}
+
   {%- assign ph = placeholder_index | default: 1 -%}
-  <div class="card-product">
-    <div class="card-product__media">
+  <div class="ee-card">
+    <div class="ee-card__media">
       {{ 'product-' | append: ph | placeholder_svg_tag: 'placeholder-svg' }}
     </div>
-    <span class="card-product__title label-red">Termék neve</span>
-    <div class="card-product__price">
-      <span class="tag-dark">9 999 Ft</span>
+    <div class="ee-card__body">
+      <div class="ee-card__vendor">EuroExpress</div>
+      <span class="ee-card__title">Termék neve</span>
+      <div class="ee-card__price">
+        <span class="ee-price"><span class="ee-price__current">9 999 Ft</span></span>
+      </div>
     </div>
   </div>
+
 {%- endif -%}

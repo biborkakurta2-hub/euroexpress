@@ -1,0 +1,28 @@
+{%- comment -%}
+  Magyar árformátum: 44 999 Ft (szóközös ezres tagolás, „Ft” utótag).
+  A Shopify a pénzösszegeket fillérben/centben adja vissza, ezért 100-zal
+  osztunk. A formázás nem a bolt pénznem-beállításától függ, így a HUF
+  megjelenés mindig egységes.
+
+  Használat:  {% render 'ee-money', price: product.price %}
+  Paraméter:  price — összeg (cent), pl. product.price, variant.compare_at_price
+{%- endcomment -%}
+
+{%- liquid
+  assign ee_amount = price | default: 0 | abs | divided_by: 100 | round
+  assign ee_digits = ee_amount | append: ''
+  assign ee_len = ee_digits.size
+  assign ee_out = ''
+
+  for i in (1..ee_len)
+    assign ee_index = i | minus: 1
+    assign ee_char = ee_digits | slice: ee_index
+    assign ee_out = ee_out | append: ee_char
+    assign ee_remaining = ee_len | minus: i
+    assign ee_mod = ee_remaining | modulo: 3
+    if ee_mod == 0 and ee_remaining > 0
+      assign ee_out = ee_out | append: ' '
+    endif
+  endfor
+-%}
+{{- ee_out }} Ft

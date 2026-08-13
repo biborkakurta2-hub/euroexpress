@@ -1,116 +1,238 @@
-<div class="section-pad">
-  <div class="page-width">
-    <div class="product-page">
+{%- liquid
+  assign ee_variant = product.selected_or_first_available_variant
+  assign ee_price = ee_variant.price | default: product.price
+  assign ee_compare = ee_variant.compare_at_price
+  assign ee_on_sale = false
+  if ee_compare != blank and ee_compare > ee_price
+    assign ee_on_sale = true
+  endif
+-%}
 
-      <div class="product-page__gallery">
-        {%- if product.images.size > 0 -%}
-          {%- for image in product.images limit: 4 -%}
-            <div class="product-page__image">
-              <img
-                src="{{ image | image_url: width: 1000 }}"
-                alt="{{ image.alt | default: product.title | escape }}"
-                width="600"
-                height="600"
-                {% if forloop.first %}loading="eager"{% else %}loading="lazy"{% endif %}
-              >
-            </div>
-          {%- endfor -%}
+{% render 'ee-breadcrumbs' %}
+
+<div class="ee-container ee-section--tight">
+  <div class="ee-product" data-ee-gallery>
+
+    <div class="ee-product__gallery">
+      <div class="ee-gallery__main" data-ee-gallery-main>
+        {%- if product.featured_image -%}
+          <img
+            src="{{ product.featured_image | image_url: width: 1200 }}"
+            srcset="{{ product.featured_image | image_url: width: 600 }} 600w, {{ product.featured_image | image_url: width: 1200 }} 1200w"
+            sizes="(min-width: 900px) 620px, 92vw"
+            alt="{{ product.featured_image.alt | default: product.title | escape }}"
+            width="800"
+            height="800"
+            loading="eager"
+          >
         {%- else -%}
-          <div class="product-page__image">
-            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-          </div>
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
         {%- endif -%}
       </div>
 
-      <div>
-        {%- if product.vendor != blank -%}
-          <div class="product-page__vendor"><span class="label-red">{{ product.vendor }}</span></div>
-        {%- endif -%}
-
-        <h1 class="product-page__title">{{ product.title }}</h1>
-
-        <div class="product-page__price">
-          {% render 'price', product: product %}
+      {%- if product.images.size > 1 -%}
+        <div class="ee-gallery__thumbs">
+          {%- for image in product.images limit: 8 -%}
+            <button
+              type="button"
+              class="ee-gallery__thumb{% if forloop.first %} is-active{% endif %}"
+              data-ee-gallery-thumb
+              data-full="{{ image | image_url: width: 1200 }}"
+              data-alt="{{ image.alt | default: product.title | escape }}"
+              aria-label="{{ forloop.index }}. kép megtekintése"
+            >
+              <img src="{{ image | image_url: width: 160 }}" alt="" width="76" height="76" loading="lazy">
+            </button>
+          {%- endfor -%}
         </div>
+      {%- endif -%}
+    </div>
 
-        {% form 'product', product, class: 'product-form' %}
-          {%- unless product.has_only_default_variant -%}
-            <div>
-              <label for="Variants-{{ section.id }}">Változat</label>
-              <select name="id" id="Variants-{{ section.id }}">
-                {%- for variant in product.variants -%}
-                  <option
-                    value="{{ variant.id }}"
-                    {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
-                    {% unless variant.available %}disabled{% endunless %}
-                  >
-                    {{ variant.title }} — {{ variant.price | money }}{% unless variant.available %} (Elfogyott){% endunless %}
-                  </option>
-                {%- endfor -%}
-              </select>
-            </div>
-          {%- else -%}
-            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-          {%- endunless -%}
+    <div class="ee-product__info">
+      {%- if product.vendor != blank -%}
+        <div class="ee-product__vendor">{{ product.vendor }}</div>
+      {%- endif -%}
 
+      <h1 class="ee-product__title">{{ product.title }}</h1>
+
+      <div class="ee-product__price">
+        {%- render 'ee-price-tag',
+          price: ee_price,
+          compare_at: ee_compare,
+          size: 'lg'
+        -%}
+      </div>
+      <div class="ee-product__tax">Az ár az áfát tartalmazza. A szállítási díj a pénztárnál kerül kiszámításra.</div>
+
+      {%- if ee_variant.available -%}
+        <div class="ee-product__stock">Raktáron — azonnal rendelhető</div>
+      {%- else -%}
+        <div class="ee-product__stock ee-product__stock--out">Jelenleg nem elérhető</div>
+      {%- endif -%}
+
+      {%- if product.description != blank -%}
+        <div class="ee-product__excerpt">{{ product.description | strip_html | truncate: 260 }}</div>
+      {%- endif -%}
+
+      {%- form 'product', product, class: 'ee-product__form' -%}
+        {%- unless product.has_only_default_variant -%}
           <div>
-            <label for="Quantity-{{ section.id }}">Mennyiség</label>
-            <div class="qty-box">
-              <button type="button" data-qty-minus aria-label="Kevesebb">&minus;</button>
-              <input
-                id="Quantity-{{ section.id }}"
-                type="number"
-                name="quantity"
-                value="1"
-                min="1"
-              >
-              <button type="button" data-qty-plus aria-label="Több">+</button>
+            <label for="EeVariants-{{ section.id }}">Változat</label>
+            <select name="id" id="EeVariants-{{ section.id }}">
+              {%- for variant in product.variants -%}
+                <option
+                  value="{{ variant.id }}"
+                  {% if variant == ee_variant %}selected{% endif %}
+                  {% unless variant.available %}disabled{% endunless %}
+                >
+                  {{ variant.title }} — {% render 'ee-money', price: variant.price %}{% unless variant.available %} (elfogyott){% endunless %}
+                </option>
+              {%- endfor -%}
+            </select>
+          </div>
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ ee_variant.id }}">
+        {%- endunless -%}
+
+        <div class="ee-product__buyrow">
+          <div>
+            <label for="EeQuantity-{{ section.id }}">Mennyiség</label>
+            <div class="ee-qty">
+              <button type="button" data-ee-qty="minus" aria-label="Mennyiség csökkentése">&minus;</button>
+              <input id="EeQuantity-{{ section.id }}" type="number" name="quantity" value="1" min="1">
+              <button type="button" data-ee-qty="plus" aria-label="Mennyiség növelése">+</button>
             </div>
           </div>
 
           <button
             type="submit"
             name="add"
-            class="btn btn--red btn--full"
-            {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+            class="ee-btn ee-btn--dark ee-btn--lg"
+            {% unless ee_variant.available %}disabled{% endunless %}
           >
-            {%- if product.selected_or_first_available_variant.available -%}
-              Kosárba
-            {%- else -%}
-              Elfogyott
-            {%- endif -%}
+            {% if ee_variant.available %}Kosárba{% else %}Elfogyott{% endif %}
           </button>
-        {% endform %}
+        </div>
+      {%- endform -%}
 
-        {%- if product.description != blank -%}
-          <div class="product-page__description">
-            {{ product.description }}
-          </div>
-        {%- endif -%}
+      {%- if section.settings.show_message_note -%}
+        <div class="ee-product__contact">
+          <strong>Kérdésed van?</strong>
+          Írj üzenetben
+          {%- if settings.social_facebook != blank %}
+            <a href="{{ settings.social_facebook }}" target="_blank" rel="noopener">Facebookon</a>
+          {%- endif -%}
+          {%- if settings.contact_email != blank %}
+            vagy e-mailben: <a href="mailto:{{ settings.contact_email }}">{{ settings.contact_email }}</a>
+          {%- endif -%}
+          {%- if settings.contact_phone != blank %}
+            · <a href="tel:{{ settings.contact_phone | remove: ' ' }}">{{ settings.contact_phone }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
 
-        {%- if section.settings.show_message_note and settings.social_facebook != blank -%}
-          <div class="product-page__note">
-            Inkább üzenetben rendelnél? Írj ránk
-            <a href="{{ settings.social_facebook }}" target="_blank" rel="noopener">Facebookon</a>{% if settings.contact_email != blank %} vagy a
-            <a href="mailto:{{ settings.contact_email }}">{{ settings.contact_email }}</a> címen{% endif %},
-            és mi intézzük a rendelésed!
-          </div>
-        {%- endif -%}
+      <div class="ee-trust">
+        <div class="ee-trust__item">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h12v8a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M15 11h3l3 3v3h-6z"/><circle cx="7.5" cy="18.5" r="1.8"/><circle cx="17.5" cy="18.5" r="1.8"/></svg>
+          Gyors házhoz szállítás
+        </div>
+        <div class="ee-trust__item">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M2.5 10h19"/></svg>
+          Utánvét is lehetséges
+        </div>
+        <div class="ee-trust__item">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.4-3.1 8.3-7.5 9.5-4.4-1.2-7.5-5.1-7.5-9.5V6z"/><path d="M9 12l2 2 4-4"/></svg>
+          Garancia minden termékre
+        </div>
       </div>
-
     </div>
   </div>
+
+  {%- if product.description != blank -%}
+    <div class="ee-panel">
+      <h2>Termékleírás</h2>
+      <div class="ee-rte">{{ product.description }}</div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="ee-panel">
+      <h2>Paraméterek</h2>
+      <table class="ee-spec">
+        <tbody>
+          {%- for block in section.blocks -%}
+            <tr {{ block.shopify_attributes }}>
+              <th scope="row">{{ block.settings.label }}</th>
+              <td>{{ block.settings.value }}</td>
+            </tr>
+          {%- endfor -%}
+          {%- if product.vendor != blank -%}
+            <tr><th scope="row">Gyártó</th><td>{{ product.vendor }}</td></tr>
+          {%- endif -%}
+          {%- if ee_variant.sku != blank -%}
+            <tr><th scope="row">Cikkszám</th><td>{{ ee_variant.sku }}</td></tr>
+          {%- endif -%}
+        </tbody>
+      </table>
+    </div>
+  {%- endif -%}
 </div>
+
+{%- assign ee_related = product.collections.first -%}
+{%- if section.settings.show_related and ee_related != blank -%}
+  <div class="ee-container ee-section">
+    <div class="ee-section__head">
+      <h2 class="ee-section__title">Kapcsolódó termékek</h2>
+      <a class="ee-section__link" href="{{ ee_related.url }}">Összes: {{ ee_related.title }}</a>
+    </div>
+    <div class="ee-grid">
+      {%- assign ee_shown = 0 -%}
+      {%- for item in ee_related.products limit: 8 -%}
+        {%- if item.id != product.id and ee_shown < 4 -%}
+          {% render 'card-product', product: item %}
+          {%- assign ee_shown = ee_shown | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Termékoldal",
+  "tag": "section",
   "settings": [
     {
       "type": "checkbox",
       "id": "show_message_note",
-      "label": "„Rendelés üzenetben” doboz megjelenítése",
+      "label": "„Kérdésed van?” doboz megjelenítése",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_related",
+      "label": "Kapcsolódó termékek megjelenítése",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "spec",
+      "name": "Paraméter sor",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Megnevezés",
+          "default": "Teljesítmény"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Érték",
+          "default": "1000 W"
+        }
+      ]
     }
   ]
 }

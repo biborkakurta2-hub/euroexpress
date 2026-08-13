@@ -6,8 +6,34 @@
       "type": "footer",
       "settings": {
         "button_label": "Vásárolj most",
-        "menu": "footer"
-      }
+        "about_text": "Háztartási gépek, konyhai kisgépek és kerti eszközök nagyker áron — közvetlen beszerzésből, felesleges árrés nélkül.",
+        "payment_methods": "SimplePay,Barion,Bankkártya,Utánvét,Foxpost,Átutalás",
+        "legal_menu": "jogi-informaciok"
+      },
+      "blocks": {
+        "col-1": {
+          "type": "menu",
+          "settings": {
+            "title": "Kategóriák",
+            "menu": "main-menu"
+          }
+        },
+        "col-2": {
+          "type": "menu",
+          "settings": {
+            "title": "Információ",
+            "menu": "footer"
+          }
+        },
+        "col-3": {
+          "type": "menu",
+          "settings": {
+            "title": "Vásárlás",
+            "menu": "jogi-informaciok"
+          }
+        }
+      },
+      "block_order": ["col-1", "col-2", "col-3"]
     }
   },
   "order": ["footer"]

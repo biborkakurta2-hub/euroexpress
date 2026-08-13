@@ -44,7 +44,7 @@
                     </div>
                   </div>
                 </td>
-                <td><span class="tag-dark">{{ item.final_price | money }}</span></td>
+                <td><span class="tag-dark">{% render 'ee-money', price: item.final_price %}</span></td>
                 <td>
                   <div class="qty-box">
                     <button type="button" data-qty-minus aria-label="Kevesebb">&minus;</button>
@@ -58,7 +58,7 @@
                     <button type="button" data-qty-plus aria-label="Több">+</button>
                   </div>
                 </td>
-                <td><strong>{{ item.final_line_price | money }}</strong></td>
+                <td><strong>{% render 'ee-money', price: item.final_line_price %}</strong></td>
               </tr>
             {%- endfor -%}
           </tbody>
@@ -68,7 +68,7 @@
           <div class="cart-summary">
             <div class="cart-summary__subtotal">
               <span>Részösszeg</span>
-              <span class="tag-dark">{{ cart.total_price | money }}</span>
+              <span class="tag-dark">{% render 'ee-money', price: cart.total_price %}</span>
             </div>
             <div class="cart-summary__note">
               Az adók és a szállítási költség a pénztárnál kerülnek kiszámításra.

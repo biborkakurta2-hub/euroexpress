@@ -1,0 +1,31 @@
+{%- comment -%}
+  Csipkés (starburst) jelvény — pl. „Nagyker árak”, „Akció”.
+  A csillag SVG-ből készül, a felirat dőlt nagybetűs szöveg a közepén.
+
+  Használat:
+    {% render 'ee-starburst', text: 'Nagyker árak', theme: 'red', size: 132 %}
+
+  Paraméterek:
+    text  — felirat (sortörés a szövegben új sort ad)
+    theme — 'red' (piros csillag, fehér szöveg) vagy 'white' (fehér csillag,
+            piros szöveg). Alapértelmezés: 'red'.
+    size  — átmérő pixelben (alapértelmezés: 130)
+{%- endcomment -%}
+
+{%- liquid
+  assign ee_burst_theme = theme | default: 'red'
+  assign ee_burst_size = size | default: 130
+  assign ee_burst_text = text | default: 'Nagyker árak'
+-%}
+
+<span
+  class="ee-burst ee-burst--{{ ee_burst_theme }}"
+  style="--ee-burst-size: {{ ee_burst_size }}px;"
+  role="img"
+  aria-label="{{ ee_burst_text | strip_newlines | escape }}"
+>
+  <svg class="ee-burst__shape" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+    <polygon points="50.0,0.0 55.4,8.9 62.9,1.7 65.9,11.7 75.0,6.7 75.3,17.1 85.4,14.6 82.9,24.7 93.3,25.0 88.3,34.1 98.3,37.1 91.1,44.6 100.0,50.0 91.1,55.4 98.3,62.9 88.3,65.9 93.3,75.0 82.9,75.3 85.4,85.4 75.3,82.9 75.0,93.3 65.9,88.3 62.9,98.3 55.4,91.1 50.0,100.0 44.6,91.1 37.1,98.3 34.1,88.3 25.0,93.3 24.7,82.9 14.6,85.4 17.1,75.3 6.7,75.0 11.7,65.9 1.7,62.9 8.9,55.4 0.0,50.0 8.9,44.6 1.7,37.1 11.7,34.1 6.7,25.0 17.1,24.7 14.6,14.6 24.7,17.1 25.0,6.7 34.1,11.7 37.1,1.7 44.6,8.9"/>
+  </svg>
+  <span class="ee-burst__text" aria-hidden="true">{{ ee_burst_text | newline_to_br }}</span>
+</span>

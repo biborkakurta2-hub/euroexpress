@@ -1,31 +1,33 @@
-<div class="section-pad">
-  <div class="page-width">
-    {%- if section.settings.title != blank -%}
-      <div class="section-heading">
-        <h2>{{ section.settings.title }}</h2>
+{%- liquid
+  assign ee_collection = section.settings.collection
+  assign ee_style = section.settings.card_style | default: 'catalog'
+  assign ee_limit = section.settings.limit | default: 6
+-%}
+
+<div class="ee-container ee-section">
+  {%- if section.settings.title != blank -%}
+    <div class="ee-section__head">
+      <div>
+        <h2 class="ee-section__title">{{ section.settings.title }}</h2>
         {%- if section.settings.subtitle != blank -%}
-          <div class="section-heading__sub">{{ section.settings.subtitle }}</div>
+          <div class="ee-collection__intro">{{ section.settings.subtitle }}</div>
         {%- endif -%}
       </div>
-    {%- endif -%}
-
-    <div class="product-grid">
-      {%- assign collection = section.settings.collection -%}
-      {%- if collection != blank and collection.products.size > 0 -%}
-        {%- for product in collection.products limit: section.settings.limit -%}
-          {% render 'card-product', product: product %}
-        {%- endfor -%}
-      {%- else -%}
-        {%- for i in (1..4) -%}
-          {% render 'card-product', product: blank, placeholder_index: forloop.index %}
-        {%- endfor -%}
+      {%- if section.settings.show_view_all and ee_collection != blank -%}
+        <a class="ee-section__link" href="{{ ee_collection.url }}">Összes megtekintése</a>
       {%- endif -%}
     </div>
+  {%- endif -%}
 
-    {%- if section.settings.show_view_all and collection != blank -%}
-      <div class="text-center mt-40">
-        <a href="{{ collection.url }}" class="btn btn--red">Összes megtekintése</a>
-      </div>
+  <div class="ee-grid{% if section.settings.columns == '3' %} ee-grid--3{% endif %}">
+    {%- if ee_collection != blank and ee_collection.products.size > 0 -%}
+      {%- for product in ee_collection.products limit: ee_limit -%}
+        {% render 'card-product', product: product, style: ee_style %}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..ee_limit) -%}
+        {% render 'card-product', product: blank, placeholder_index: forloop.index %}
+      {%- endfor -%}
     {%- endif -%}
   </div>
 </div>
@@ -33,12 +35,13 @@
 {% schema %}
 {
   "name": "Kiemelt termékek",
+  "tag": "section",
   "settings": [
     {
       "type": "text",
       "id": "title",
       "label": "Cím",
-      "default": "Katalógus ajánlatunk"
+      "default": "Kiemelt akciók"
     },
     {
       "type": "text",
@@ -54,16 +57,36 @@
     {
       "type": "range",
       "id": "limit",
-      "min": 4,
+      "min": 3,
       "max": 12,
-      "step": 4,
+      "step": 1,
       "label": "Termékek száma",
-      "default": 8
+      "default": 6
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Oszlopok (asztali gép)",
+      "options": [
+        { "value": "3", "label": "3 oszlop (katalógus 3×2)" },
+        { "value": "4", "label": "4 oszlop" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Kártya stílus",
+      "options": [
+        { "value": "catalog", "label": "Katalógus (piros címke + fekete ártábla)" },
+        { "value": "shop", "label": "Webshop (akciós ár, gyors kosárba)" }
+      ],
+      "default": "catalog"
     },
     {
       "type": "checkbox",
       "id": "show_view_all",
-      "label": "„Összes megtekintése” gomb",
+      "label": "„Összes megtekintése” link",
       "default": true
     }
   ],

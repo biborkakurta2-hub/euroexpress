@@ -1,0 +1,67 @@
+{%- comment -%}
+  Morzsamenü (Főoldal / Kategória / Termék).
+  Terméknél a legutóbb megnyitott gyűjtemény (collection) is bekerül, ha van.
+{%- endcomment -%}
+
+{%- unless template.name == 'index' -%}
+  <nav class="ee-breadcrumbs" aria-label="Morzsamenü">
+    <div class="ee-container">
+      <ol>
+        <li><a href="{{ routes.root_url }}">Főoldal</a></li>
+
+        {%- case template.name -%}
+          {%- when 'collection' -%}
+            <li aria-hidden="true" class="ee-breadcrumbs__sep">/</li>
+            {%- if collection.handle -%}
+              <li><a href="{{ routes.collections_url }}">Kategóriák</a></li>
+              <li aria-hidden="true" class="ee-breadcrumbs__sep">/</li>
+              <li><span aria-current="page">{{ collection.title }}</span></li>
+            {%- else -%}
+              <li><span aria-current="page">Termékek</span></li>
+            {%- endif -%}
+
+          {%- when 'product' -%}
+            {%- if collection.title != blank -%}
+              <li aria-hidden="true" class="ee-breadcrumbs__sep">/</li>
+              <li><a href="{{ collection.url }}">{{ collection.title }}</a></li>
+            {%- elsif product.collections.first != blank -%}
+              <li aria-hidden="true" class="ee-breadcrumbs__sep">/</li>
+              <li><a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a></li>
+            {%- endif -%}
+            <li aria-hidden="true" class="ee-breadcrumbs__sep">/</li>
+            <li><span aria-current="page">{{ product.title }}</span></li>
+
+          {%- when 'page' -%}
+            <li aria-hidden="true" class="ee-breadcrumbs__sep">/</li>
+            <li><span aria-current="page">{{ page.title }}</span></li>
+
+          {%- when 'blog' -%}
+            <li aria-hidden="true" class="ee-breadcrumbs__sep">/</li>
+            <li><span aria-current="page">{{ blog.title }}</span></li>
+
+          {%- when 'article' -%}
+            <li aria-hidden="true" class="ee-breadcrumbs__sep">/</li>
+            <li><a href="{{ blog.url }}">{{ blog.title }}</a></li>
+            <li aria-hidden="true" class="ee-breadcrumbs__sep">/</li>
+            <li><span aria-current="page">{{ article.title }}</span></li>
+
+          {%- when 'search' -%}
+            <li aria-hidden="true" class="ee-breadcrumbs__sep">/</li>
+            <li><span aria-current="page">Keresés</span></li>
+
+          {%- when 'list-collections' -%}
+            <li aria-hidden="true" class="ee-breadcrumbs__sep">/</li>
+            <li><span aria-current="page">Kategóriák</span></li>
+
+          {%- when 'cart' -%}
+            <li aria-hidden="true" class="ee-breadcrumbs__sep">/</li>
+            <li><span aria-current="page">Kosár</span></li>
+
+          {%- else -%}
+            <li aria-hidden="true" class="ee-breadcrumbs__sep">/</li>
+            <li><span aria-current="page">{{ page_title }}</span></li>
+        {%- endcase -%}
+      </ol>
+    </div>
+  </nav>
+{%- endunless -%}

@@ -1,0 +1,259 @@
+{%- liquid
+  assign ee_per_page = section.settings.products_per_page | default: 24
+  assign ee_subcat_menu = linklists[collection.handle]
+  assign ee_intro = collection.metafields.custom.rovid_leiras
+  if ee_intro == blank
+    assign ee_intro = collection.description | strip_html | truncate: 220
+  endif
+-%}
+
+{% render 'ee-breadcrumbs' %}
+
+<div class="ee-container">
+  <div class="ee-collection__header">
+    <h1 class="ee-collection__title">{{ collection.title | default: 'Termékek' }}</h1>
+    {%- if ee_intro != blank -%}
+      <div class="ee-collection__intro">{{ ee_intro }}</div>
+    {%- endif -%}
+  </div>
+
+  {%- if ee_subcat_menu != blank and ee_subcat_menu.links.size > 0 -%}
+    <div class="ee-subcats" aria-label="Alkategóriák">
+      {%- for link in ee_subcat_menu.links -%}
+        {%- assign ee_sub = collections[link.object.handle] -%}
+        <a class="ee-subcat" href="{{ link.url }}">
+          <span class="ee-subcat__thumb">
+            {%- if ee_sub.featured_image != blank -%}
+              <img
+                src="{{ ee_sub.featured_image | image_url: width: 180 }}"
+                alt=""
+                width="84"
+                height="84"
+                loading="lazy"
+              >
+            {%- elsif ee_sub.products.first.featured_image != blank -%}
+              <img
+                src="{{ ee_sub.products.first.featured_image | image_url: width: 180 }}"
+                alt=""
+                width="84"
+                height="84"
+                loading="lazy"
+              >
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </span>
+          <span class="ee-subcat__label">{{ link.title }}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- paginate collection.products by ee_per_page -%}
+
+    <div class="ee-collection__layout">
+
+      {%- if section.settings.show_filters -%}
+        {% render 'ee-facets',
+          results: collection,
+          results_url: collection.url,
+          sale_tag: section.settings.sale_tag
+        %}
+      {%- endif -%}
+
+      <div class="ee-collection__results">
+
+        <div class="ee-toolbar">
+          <div class="ee-toolbar__count">
+            {{ collection.products_count }} termék
+          </div>
+
+          <div class="ee-toolbar__right">
+            {%- if section.settings.show_filters -%}
+              <button
+                type="button"
+                class="ee-btn ee-btn--ghost ee-btn--sm ee-toolbar__filter-btn"
+                data-ee-facets-open
+                aria-expanded="false"
+              >
+                Szűrők
+              </button>
+            {%- endif -%}
+
+            {%- if collection.sort_options.size > 0 -%}
+              <form method="get" action="{{ collection.url }}">
+                {%- for filter in collection.filters -%}
+                  {%- for value in filter.active_values -%}
+                    <input type="hidden" name="{{ value.param_name }}" value="{{ value.value | escape }}">
+                  {%- endfor -%}
+                  {%- if filter.type == 'price_range' -%}
+                    {%- if filter.min_value.value -%}
+                      <input type="hidden" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | divided_by: 100 }}">
+                    {%- endif -%}
+                    {%- if filter.max_value.value -%}
+                      <input type="hidden" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | divided_by: 100 }}">
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+
+                <label class="visually-hidden" for="EeSortBy">Rendezés</label>
+                <select id="EeSortBy" name="sort_by" data-ee-sort>
+                  {%- assign ee_sort = collection.sort_by | default: collection.default_sort_by -%}
+                  {%- for option in collection.sort_options -%}
+                    <option value="{{ option.value }}" {% if option.value == ee_sort %}selected{% endif %}>
+                      {{ option.name }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+                <noscript><button type="submit" class="ee-btn ee-btn--dark ee-btn--sm">Rendez</button></noscript>
+              </form>
+            {%- endif -%}
+          </div>
+        </div>
+
+        {%- comment -%} Aktív szűrők {%- endcomment -%}
+        {%- assign ee_has_active = false -%}
+        {%- for filter in collection.filters -%}
+          {%- if filter.active_values.size > 0 or filter.min_value.value or filter.max_value.value -%}
+            {%- assign ee_has_active = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if ee_has_active -%}
+          <div class="ee-active-filters">
+            {%- for filter in collection.filters -%}
+              {%- for value in filter.active_values -%}
+                <a class="ee-active-filter" href="{{ value.url_to_remove }}">
+                  {{ value.label }}
+                  <span class="ee-active-filter__x" aria-hidden="true">×</span>
+                  <span class="visually-hidden">szűrő eltávolítása</span>
+                </a>
+              {%- endfor -%}
+              {%- liquid
+                assign ee_price_active = false
+                if filter.type == 'price_range'
+                  if filter.min_value.value or filter.max_value.value
+                    assign ee_price_active = true
+                  endif
+                endif
+              -%}
+              {%- if ee_price_active -%}
+                <a class="ee-active-filter" href="{{ filter.url_to_remove }}">
+                  {% if filter.min_value.value %}{% render 'ee-money', price: filter.min_value.value %}{% else %}0 Ft{% endif %}
+                  –
+                  {% if filter.max_value.value %}{% render 'ee-money', price: filter.max_value.value %}{% else %}{% render 'ee-money', price: filter.range_max %}{% endif %}
+                  <span class="ee-active-filter__x" aria-hidden="true">×</span>
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+            <a class="ee-active-filters__clear" href="{{ collection.url }}">Összes szűrő törlése</a>
+          </div>
+        {%- endif -%}
+
+        {%- if collection.products.size > 0 -%}
+          <div class="ee-grid">
+            {%- for product in collection.products -%}
+              {% render 'card-product', product: product %}
+            {%- endfor -%}
+          </div>
+
+          {% render 'ee-pagination', paginate: paginate %}
+        {%- else -%}
+          <div class="ee-empty">
+            <h2>Nincs a szűrésnek megfelelő termék</h2>
+            <p>Próbáld meg kevesebb szűrővel, vagy nézd meg a teljes kínálatot.</p>
+            <a class="ee-btn ee-btn--red" href="{{ collection.url }}">Szűrők törlése</a>
+          </div>
+        {%- endif -%}
+
+      </div>
+    </div>
+
+  {%- endpaginate -%}
+
+  {%- comment -%} SEO / vásárlási útmutató {%- endcomment -%}
+  {%- if collection.description != blank or section.blocks.size > 0 -%}
+    <div class="ee-guide">
+      <h2>{{ section.settings.guide_title | default: 'Vásárlási útmutató' }}</h2>
+
+      {%- if collection.description != blank -%}
+        <details class="ee-guide__item" open>
+          <summary>
+            {{ collection.title }} — mit érdemes tudni?
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="ee-guide__body ee-rte">{{ collection.description }}</div>
+        </details>
+      {%- endif -%}
+
+      {%- for block in section.blocks -%}
+        <details class="ee-guide__item" {{ block.shopify_attributes }}>
+          <summary>
+            {{ block.settings.title }}
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="ee-guide__body ee-rte">{{ block.settings.text }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Kategória termékrács",
+  "tag": "section",
+  "class": "ee-section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "label": "Termékek oldalanként",
+      "default": 24
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Szűrő sáv megjelenítése",
+      "info": "A szűrők a Shopify admin → Search & Discovery alkalmazásban állíthatók be.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sale_tag",
+      "label": "„Csak akciós termékek” címke",
+      "info": "Az akciós termékekre tett Shopify címke (tag). Üresen hagyva a kapcsoló nem jelenik meg.",
+      "default": "akció"
+    },
+    {
+      "type": "text",
+      "id": "guide_title",
+      "label": "Útmutató blokk címe",
+      "default": "Vásárlási útmutató"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "guide",
+      "name": "Útmutató szakasz",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Cím",
+          "default": "Hogyan válassz?"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Szöveg",
+          "default": "<p>Írd le, mire érdemes figyelni a kategória termékeinek választásakor.</p>"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

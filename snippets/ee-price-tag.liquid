@@ -1,0 +1,68 @@
+{%- comment -%}
+  Ár megjelenítése két stílusban:
+
+  1. style: 'tag'  — fekete lekerekített ártábla, fehér félkövér árral
+                     (a katalógus „44 999 Ft” cédulái). Kezdőlap, hero.
+  2. style: 'shop' — webshop ár blokk (alapértelmezés): akció esetén áthúzott
+                     eredeti ár szürkén + akciós ár pirossal + „-30%” címke.
+
+  Használat:
+    {% render 'ee-price-tag', price: product.price, compare_at: product.compare_at_price %}
+    {% render 'ee-price-tag', price: product.price, style: 'tag', size: 'lg' %}
+
+  Paraméterek:
+    price         — ár (cent) — kötelező
+    compare_at    — összehasonlító ár (cent), opcionális
+    style         — 'shop' (alap) vagy 'tag'
+    size          — 'sm' | 'md' (alap) | 'lg'
+    varies        — true, ha az ártól kezdődik („44 999 Ft-tól”)
+    show_discount — kedvezmény % címke akciónál (alap: true)
+{%- endcomment -%}
+
+{%- liquid
+  assign ee_price_style = style | default: 'shop'
+  assign ee_price_size = size | default: 'md'
+  assign ee_on_sale = false
+  if compare_at != blank and compare_at > price
+    assign ee_on_sale = true
+    assign ee_saving = compare_at | minus: price | times: 100.0 | divided_by: compare_at | round
+  endif
+  assign ee_show_discount = true
+  if show_discount == false
+    assign ee_show_discount = false
+  endif
+-%}
+
+{%- if ee_price_style == 'tag' -%}
+  <span class="ee-pricetag ee-pricetag--{{ ee_price_size }}">
+    {%- if ee_on_sale -%}
+      <s class="ee-pricetag__compare">{% render 'ee-money', price: compare_at %}</s>
+    {%- endif -%}
+    <span class="ee-pricetag__value">
+      {%- render 'ee-money', price: price -%}
+      {%- if varies %}-tól{% endif -%}
+    </span>
+  </span>
+{%- else -%}
+  <span class="ee-price ee-price--{{ ee_price_size }}{% if ee_on_sale %} ee-price--sale{% endif %}">
+    {%- if ee_on_sale -%}
+      <s class="ee-price__compare">
+        <span class="visually-hidden">Eredeti ár: </span>
+        {%- render 'ee-money', price: compare_at -%}
+      </s>
+      <span class="ee-price__current">
+        <span class="visually-hidden">Akciós ár: </span>
+        {%- render 'ee-money', price: price -%}
+        {%- if varies %}-tól{% endif -%}
+      </span>
+      {%- if ee_show_discount and ee_saving > 0 -%}
+        <span class="ee-price__discount">-{{ ee_saving }}%</span>
+      {%- endif -%}
+    {%- else -%}
+      <span class="ee-price__current">
+        {%- render 'ee-money', price: price -%}
+        {%- if varies %}-tól{% endif -%}
+      </span>
+    {%- endif -%}
+  </span>
+{%- endif -%}

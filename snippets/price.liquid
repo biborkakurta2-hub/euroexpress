@@ -11,11 +11,11 @@
 
 <span class="tag-dark">
   {%- if product.price_varies -%}
-    {{ product.price_min | money }} -tól
+    {% render 'ee-money', price: product.price_min %}-tól
   {%- elsif compare_price > price -%}
-    <s>{{ compare_price | money }}</s>{{ price | money }}
+    <s>{% render 'ee-money', price: compare_price %}</s>{% render 'ee-money', price: price %}
   {%- else -%}
-    {{ price | money }}
+    {% render 'ee-money', price: price %}
   {%- endif -%}
 </span>
 {%- if product.available == false -%}

@@ -1,0 +1,154 @@
+{%- comment -%}
+  Szűrő sáv (Shopify faceted filtering).
+  A szűrők a Shopify admin → Search & Discovery alkalmazásban állíthatók be
+  (kategória, márka/gyártó, ár, elérhetőség, címke). A téma automatikusan
+  megjeleníti az ott bekapcsolt szűrőket, magyar feliratokkal.
+
+  Paraméterek:
+    results     — collection vagy search objektum
+    results_url — az űrlap célja (collection.url vagy routes.search_url)
+    sale_tag    — „csak akciós termékek” kapcsolóhoz használt címke (opcionális)
+{%- endcomment -%}
+
+{%- liquid
+  assign ee_results = results
+  assign ee_url = results_url | default: collection.url
+-%}
+
+<form
+  method="get"
+  action="{{ ee_url }}"
+  class="ee-facets"
+  data-ee-facets
+  data-ee-facet-form
+>
+  {%- if ee_results.sort_by != blank -%}
+    <input type="hidden" name="sort_by" value="{{ ee_results.sort_by }}">
+  {%- endif -%}
+  {%- if search.terms != blank -%}
+    <input type="hidden" name="q" value="{{ search.terms | escape }}">
+    <input type="hidden" name="type" value="product">
+  {%- endif -%}
+
+  <div class="ee-facets__close">
+    <strong>Szűrők</strong>
+    <button type="button" class="ee-btn ee-btn--ghost ee-btn--sm" data-ee-facets-close>Bezárás</button>
+  </div>
+
+  <h2 class="ee-facets__heading">Szűrés</h2>
+
+  {%- if sale_tag != blank -%}
+    {%- assign ee_sale_active = false -%}
+    {%- for filter in ee_results.filters -%}
+      {%- if filter.param_name == 'filter.p.tag' -%}
+        {%- for value in filter.active_values -%}
+          {%- if value.value == sale_tag -%}{%- assign ee_sale_active = true -%}{%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    <details class="ee-facet" open>
+      <summary>
+        Akciók
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </summary>
+      <div class="ee-facet__body">
+        <label class="ee-facet__option">
+          <input
+            type="checkbox"
+            name="filter.p.tag"
+            value="{{ sale_tag }}"
+            {% if ee_sale_active %}checked{% endif %}
+          >
+          <span>Csak akciós termékek</span>
+        </label>
+      </div>
+    </details>
+  {%- endif -%}
+
+  {%- for filter in ee_results.filters -%}
+    {%- case filter.type -%}
+
+      {%- when 'list', 'boolean' -%}
+        <details class="ee-facet"{% if filter.active_values.size > 0 or forloop.index <= 3 %} open{% endif %}>
+          <summary>
+            {{ filter.label }}
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="ee-facet__body">
+            {%- for value in filter.values -%}
+              {%- liquid
+                assign ee_disabled = false
+                if value.count == 0 and value.active == false
+                  assign ee_disabled = true
+                endif
+              -%}
+              <label class="ee-facet__option{% if ee_disabled %} ee-facet__option--disabled{% endif %}">
+                <input
+                  type="checkbox"
+                  name="{{ value.param_name }}"
+                  value="{{ value.value | escape }}"
+                  {% if value.active %}checked{% endif %}
+                  {% if ee_disabled %}disabled{% endif %}
+                >
+                <span>{{ value.label }}</span>
+                <span class="ee-facet__count">({{ value.count }})</span>
+              </label>
+            {%- endfor -%}
+          </div>
+        </details>
+
+      {%- when 'price_range' -%}
+        {%- liquid
+          assign ee_price_max = filter.range_max | divided_by: 100 | round
+          assign ee_min_value = filter.min_value.value | divided_by: 100
+          assign ee_max_value = filter.max_value.value | divided_by: 100
+        -%}
+        <details class="ee-facet" open>
+          <summary>
+            Ár
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="ee-facet__body">
+            <div class="ee-facet__range">
+              <label class="visually-hidden" for="EeFilterMin">Minimum ár</label>
+              <input
+                id="EeFilterMin"
+                type="number"
+                inputmode="numeric"
+                min="0"
+                max="{{ ee_price_max }}"
+                step="100"
+                placeholder="0"
+                name="{{ filter.min_value.param_name }}"
+                {% if filter.min_value.value %}value="{{ ee_min_value }}"{% endif %}
+              >
+              <span class="ee-facet__range-suffix">–</span>
+              <label class="visually-hidden" for="EeFilterMax">Maximum ár</label>
+              <input
+                id="EeFilterMax"
+                type="number"
+                inputmode="numeric"
+                min="0"
+                max="{{ ee_price_max }}"
+                step="100"
+                placeholder="{{ ee_price_max }}"
+                name="{{ filter.max_value.param_name }}"
+                {% if filter.max_value.value %}value="{{ ee_max_value }}"{% endif %}
+              >
+              <span class="ee-facet__range-suffix">Ft</span>
+            </div>
+            <button type="submit" class="ee-btn ee-btn--dark ee-btn--sm">Ár szűrése</button>
+          </div>
+        </details>
+
+    {%- endcase -%}
+  {%- endfor -%}
+
+  <div class="ee-facets__actions">
+    <button type="submit" class="ee-btn ee-btn--red ee-btn--sm ee-btn--full">Szűrés</button>
+    <a class="ee-btn ee-btn--ghost ee-btn--sm ee-btn--full" href="{{ ee_url }}{% if search.terms != blank %}?q={{ search.terms | url_encode }}&type=product{% endif %}">
+      Törlés
+    </a>
+  </div>
+</form>

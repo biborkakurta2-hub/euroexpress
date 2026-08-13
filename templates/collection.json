@@ -1,8 +1,37 @@
 {
   "sections": {
     "main": {
-      "type": "main-collection",
-      "settings": {}
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 24,
+        "show_filters": true,
+        "sale_tag": "akció",
+        "guide_title": "Vásárlási útmutató"
+      },
+      "blocks": {
+        "guide-1": {
+          "type": "guide",
+          "settings": {
+            "title": "Mire figyelj vásárlás előtt?",
+            "text": "<p>Nézd meg a termék teljesítményét (W), méretét és tartozékait — a legtöbb háztartási gépnél ez a három adat dönti el, hogy mennyire lesz praktikus a mindennapokban. A leírásban minden fontos paramétert megtalálsz.</p>"
+          }
+        },
+        "guide-2": {
+          "type": "guide",
+          "settings": {
+            "title": "Szállítás és fizetés",
+            "text": "<p>Rendelésed futárszolgálattal vagy csomagpontra kérheted. Fizethetsz bankkártyával online, utánvéttel átvételkor, vagy előre utalással. A szállítási díj a pénztárnál, a szállítási cím megadása után jelenik meg.</p>"
+          }
+        },
+        "guide-3": {
+          "type": "guide",
+          "settings": {
+            "title": "Garancia és ügyfélszolgálat",
+            "text": "<p>Minden termékre a jogszabály szerinti garancia vonatkozik. Kérdésed van egy termékkel kapcsolatban? Írj nekünk üzenetben vagy e-mailben — segítünk kiválasztani a számodra megfelelőt.</p>"
+          }
+        }
+      },
+      "block_order": ["guide-1", "guide-2", "guide-3"]
     }
   },
   "order": ["main"]

@@ -1,0 +1,50 @@
+/* ==========================================================================
+   EuroExpress Áruház — arculati alaprendszer (design tokens)
+   Ez a fájl tölt be legelőször: itt él az összes márkaváltozó, amit a téma
+   többi stíluslapja és a szekciók használnak. A téma beállításokból érkező
+   értékek (settings) a theme.liquid <style> blokkjában felülírják ezeket.
+   ========================================================================== */
+
+:root {
+  /* --- Színek ---------------------------------------------------------- */
+  --ee-red: #E30613;        /* fő piros — CTA, címkék, felső sáv */
+  --ee-red-dark: #B70410;   /* hover / árnyék */
+  --ee-black: #111111;      /* fejlécek, ártáblák, szöveg */
+  --ee-white: #FFFFFF;
+  --ee-bg: #F2F2F2;         /* oldal háttér */
+  --ee-card: #FFFFFF;       /* termékkártya háttér */
+  --ee-line: #E3E3E3;       /* elválasztó vonalak */
+  --ee-muted: #6B6B6B;      /* másodlagos szöveg */
+  --ee-sale: #E30613;       /* akciós ár színe */
+
+  /* --- Tipográfia ------------------------------------------------------ */
+  --ee-font-display: 'Montserrat', 'Poppins', 'Arial Narrow', Arial, sans-serif;
+  --ee-font-body: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  --ee-weight-display: 800;
+  --ee-weight-display-strong: 900;
+
+  /* --- Térközök, sugarak, árnyékok ------------------------------------- */
+  --ee-radius-sm: 3px;
+  --ee-radius: 6px;
+  --ee-radius-pill: 999px;
+  --ee-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --ee-shadow-card-hover: 0 6px 20px rgba(0, 0, 0, 0.14);
+  --ee-shadow-menu: 0 14px 34px rgba(0, 0, 0, 0.18);
+  --ee-page-width: 1400px;
+  --ee-gutter: 20px;
+
+  /* --- Kompatibilitás a téma korábbi változóival ------------------------ */
+  --color-accent: var(--ee-red);
+  --color-dark: var(--ee-black);
+  --color-paper: var(--ee-bg);
+  --color-ink: var(--ee-black);
+  --color-muted: var(--ee-muted);
+  --font-heading: var(--ee-font-display);
+  --font-body: var(--ee-font-body);
+}
+
+@media (max-width: 749px) {
+  :root {
+    --ee-gutter: 14px;
+  }
+}

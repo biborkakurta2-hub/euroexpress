@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "EuroExpress Áruház",
-    "theme_version": "1.0.0",
+    "theme_version": "2.0.0",
     "theme_author": "EuroExpress",
     "theme_documentation_url": "https://github.com/biborkakurta2-hub/euroexpress",
     "theme_support_url": "https://github.com/biborkakurta2-hub/euroexpress"
@@ -11,34 +11,62 @@
     "name": "Színek",
     "settings": [
       {
+        "type": "paragraph",
+        "content": "Az arculati alapszínek. Ezek öröklődnek az egész témára (CSS változókként)."
+      },
+      {
         "type": "color",
         "id": "color_accent",
-        "label": "Márka piros",
+        "label": "Márka piros (CTA, címkék, fejléc)",
         "default": "#E30613"
       },
       {
         "type": "color",
+        "id": "color_accent_dark",
+        "label": "Piros — hover / árnyék",
+        "default": "#B70410"
+      },
+      {
+        "type": "color",
         "id": "color_dark",
-        "label": "Sötét (fekete)",
-        "default": "#111114"
+        "label": "Fekete (ártáblák, gombok, menü)",
+        "default": "#111111"
       },
       {
         "type": "color",
         "id": "color_paper",
-        "label": "Háttér (papír)",
-        "default": "#EFEFEF"
+        "label": "Oldal háttér",
+        "default": "#F2F2F2"
+      },
+      {
+        "type": "color",
+        "id": "color_card",
+        "label": "Termékkártya háttér",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_line",
+        "label": "Elválasztó vonalak",
+        "default": "#E3E3E3"
       },
       {
         "type": "color",
         "id": "color_ink",
         "label": "Szövegszín",
-        "default": "#1C1C20"
+        "default": "#111111"
       },
       {
         "type": "color",
         "id": "color_muted",
-        "label": "Halvány szövegszín",
-        "default": "#4A4A52"
+        "label": "Másodlagos szövegszín",
+        "default": "#6B6B6B"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "Akciós ár színe",
+        "default": "#E30613"
       }
     ]
   },
@@ -46,16 +74,8 @@
     "name": "Tipográfia",
     "settings": [
       {
-        "type": "font_picker",
-        "id": "type_heading_font",
-        "label": "Címsor betűtípus",
-        "default": "oswald_n4"
-      },
-      {
-        "type": "font_picker",
-        "id": "type_body_font",
-        "label": "Szöveg betűtípus",
-        "default": "assistant_n4"
+        "type": "paragraph",
+        "content": "A téma a Montserrat (címsorok, 800/900 vastagság, nagybetűs) és az Inter (törzsszöveg) betűtípusokat tölti be a Google Fontsról. Cseréjükhöz a layout/theme.liquid fejlécében lévő Google Fonts hivatkozást és az assets/euroexpress-tokens.css --ee-font-display / --ee-font-body változóit módosítsd."
       }
     ]
   },
@@ -64,7 +84,7 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "Ha nem töltesz fel logóképet, a téma a beépített EUROEXPRESS ÁRUHÁZ logót jeleníti meg (piros EURO, fehér EXPRESS, fekete kerettel)."
+        "content": "Töltsd fel az EuroExpress logót (SVG vagy háttér nélküli PNG). Amíg nincs feltöltve, a téma a beépített EUROEXPRESS ÁRUHÁZ logót jeleníti meg."
       },
       {
         "type": "image_picker",
@@ -79,7 +99,7 @@
         "step": 10,
         "unit": "px",
         "label": "Logó szélessége",
-        "default": 200
+        "default": 210
       }
     ]
   },

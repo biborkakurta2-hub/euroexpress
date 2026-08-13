@@ -1,0 +1,28 @@
+{%- comment -%}
+  Piros kategória-címke (a katalógus „MIX MASTER”, „VÍZFORRALÓ” felirataihoz).
+  Telt színű dobozka, fehér nagybetűs félkövér szöveg, enyhén lekerekített sarok.
+
+  Használat:
+    {% render 'ee-label', text: 'Vízforraló' %}
+    {% render 'ee-label', text: '-30%', theme: 'red', size: 'sm' %}
+    {% render 'ee-label', text: 'Konyhai kisgépek', url: collection.url %}
+
+  Paraméterek:
+    text  — a felirat (kötelező)
+    theme — 'red' (alap), 'dark', 'outline', 'muted'
+    size  — 'sm' | 'md' (alap) | 'lg'
+    url   — ha meg van adva, linkként jelenik meg
+{%- endcomment -%}
+
+{%- liquid
+  assign ee_label_theme = theme | default: 'red'
+  assign ee_label_size = size | default: 'md'
+-%}
+
+{%- if text != blank -%}
+  {%- if url != blank -%}
+    <a class="ee-label ee-label--{{ ee_label_theme }} ee-label--{{ ee_label_size }}" href="{{ url }}">{{ text }}</a>
+  {%- else -%}
+    <span class="ee-label ee-label--{{ ee_label_theme }} ee-label--{{ ee_label_size }}">{{ text }}</span>
+  {%- endif -%}
+{%- endif -%}

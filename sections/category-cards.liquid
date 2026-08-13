@@ -1,186 +1,145 @@
-<div class="section-pad">
-  <div class="page-width">
-    {%- if section.settings.title != blank -%}
-      <div class="section-heading">
-        <h2>{{ section.settings.title }}</h2>
-        {%- if section.settings.subtitle != blank -%}
-          <div class="section-heading__sub">{{ section.settings.subtitle }}</div>
-        {%- endif -%}
-      </div>
-    {%- endif -%}
-
-    <div class="card-grid">
-      {%- for block in section.blocks -%}
-        {%- liquid
-          assign card_collection = block.settings.collection
-          assign card_title = block.settings.title
-          assign card_url = block.settings.link
-          assign card_image = block.settings.image
-
-          if card_collection != blank
-            if card_title == blank
-              assign card_title = card_collection.title
-            endif
-            if card_url == blank
-              assign card_url = card_collection.url
-            endif
-            if card_image == blank
-              assign card_image = card_collection.featured_image
-            endif
-          endif
-        -%}
-
-        {%- if card_url != blank -%}
-          <a href="{{ card_url }}" class="info-card" {{ block.shopify_attributes }}>
-        {%- else -%}
-          <div class="info-card" {{ block.shopify_attributes }}>
-        {%- endif -%}
-
-          <div class="info-card__thumb">
-            {%- if card_image != blank -%}
-              <img
-                src="{{ card_image | image_url: width: 700 }}"
-                alt="{{ card_image.alt | default: card_title | escape }}"
-                loading="lazy"
-              >
-            {%- else -%}
-              {%- case block.settings.icon -%}
-                {%- when 'kitchen' -%}
-                  <svg viewBox="0 0 24 24"><path d="M7 3v5c0 1.1.9 2 2 2s2-.9 2-2V3"/><path d="M9 3v6"/><path d="M9 10v11"/><path d="M16 3c-1.6 1.8-1.6 6.2 0 8"/><path d="M16 3v18"/></svg>
-                {%- when 'garden' -%}
-                  <svg viewBox="0 0 24 24"><path d="M5 10h8v7a2 2 0 01-2 2H7a2 2 0 01-2-2z"/><path d="M13 12h4l3-4"/><path d="M7 10V8a2 2 0 012-2h3"/></svg>
-                {%- when 'tag' -%}
-                  <svg viewBox="0 0 24 24"><path d="M11 3H4v7l9 9 7-7-9-9z"/><circle cx="7.5" cy="7.5" r="1.4"/></svg>
-                {%- when 'truck' -%}
-                  <svg viewBox="0 0 24 24"><path d="M3 6h11v10H3z"/><path d="M14 9h4l3 3.5V16h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="17.5" cy="18" r="2"/></svg>
-                {%- when 'chat' -%}
-                  <svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-4 3z"/><path d="M8 9.5h8M8 12.5h5"/></svg>
-                {%- else -%}
-                  <svg viewBox="0 0 24 24"><path d="M8 3h6l-1 9h-4z"/><path d="M7.5 3h7"/><path d="M9 12l-.4 2h6.8l-.4-2"/><path d="M8 14h8v4a1 1 0 01-1 1H9a1 1 0 01-1-1z"/></svg>
-              {%- endcase -%}
-            {%- endif -%}
-          </div>
-
-          <span class="info-card__label label-red">{{ card_title | default: 'Kategória' }}</span>
-
-          {%- if block.settings.text != blank -%}
-            <div class="info-card__desc">{{ block.settings.text }}</div>
-          {%- endif -%}
-
-          {%- if block.settings.tag != blank -%}
-            <span class="info-card__tag tag-dark">{{ block.settings.tag }}</span>
-          {%- endif -%}
-
-        {%- if card_url != blank -%}
-          </a>
-        {%- else -%}
-          </div>
-        {%- endif -%}
-      {%- endfor -%}
+<div class="ee-container ee-section">
+  {%- if section.settings.title != blank -%}
+    <div class="ee-section__head">
+      <h2 class="ee-section__title">{{ section.settings.title }}</h2>
+      {%- if section.settings.link_label != blank -%}
+        <a class="ee-section__link" href="{{ section.settings.link_url | default: routes.collections_url }}">
+          {{ section.settings.link_label }}
+        </a>
+      {%- endif -%}
     </div>
+  {%- endif -%}
+
+  <div class="ee-tiles">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign ee_col = block.settings.collection
+        assign ee_url = block.settings.link | default: ee_col.url | default: routes.collections_url
+        assign ee_title = block.settings.title | default: ee_col.title
+        assign ee_image = block.settings.image | default: ee_col.featured_image
+      -%}
+      <a class="ee-tile" href="{{ ee_url }}" {{ block.shopify_attributes }}>
+        <span class="ee-tile__media">
+          {%- if ee_image != blank -%}
+            <img
+              src="{{ ee_image | image_url: width: 600 }}"
+              alt=""
+              width="300"
+              height="225"
+              loading="lazy"
+            >
+          {%- else -%}
+            {%- case block.settings.icon -%}
+              {%- when 'kisgep' -%}
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4h9l-1.2 8.5H7.7z"/><path d="M9.3 12.5v2.6a2.7 2.7 0 002.7 2.7"/><path d="M9 20h6"/><path d="M12 17.8V20"/></svg>
+              {%- when 'nagygep' -%}
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2"/><path d="M5 9h14"/><path d="M8.5 5v2M8.5 12v3"/></svg>
+              {%- when 'haztartas' -%}
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16h6l1-8h2l1 8h6"/><path d="M7 16v4h10v-4"/><path d="M12 8V3"/></svg>
+              {%- when 'kert' -%}
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h9v-4H3z"/><path d="M12 16h4l5-6v8h-9"/><circle cx="6" cy="20" r="1.6"/><circle cx="17.5" cy="20" r="1.6"/></svg>
+              {%- else -%}
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></svg>
+            {%- endcase -%}
+          {%- endif -%}
+        </span>
+        <span class="ee-tile__body">
+          {%- if block.settings.tag != blank -%}
+            <span>{% render 'ee-label', text: block.settings.tag, size: 'sm' %}</span>
+          {%- endif -%}
+          <span class="ee-tile__title">{{ ee_title }}</span>
+          {%- if block.settings.text != blank -%}
+            <span class="ee-tile__text">{{ block.settings.text }}</span>
+          {%- endif -%}
+        </span>
+      </a>
+    {%- endfor -%}
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "Kategória kártyák",
+  "name": "Kategória csempék",
+  "tag": "section",
   "settings": [
     {
       "type": "text",
       "id": "title",
       "label": "Cím",
-      "default": "Miben segíthetünk?"
+      "default": "Kategóriák"
     },
     {
       "type": "text",
-      "id": "subtitle",
-      "label": "Alcím"
+      "id": "link_label",
+      "label": "Jobb oldali link felirata",
+      "default": "Összes kategória"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Jobb oldali link"
     }
   ],
+  "max_blocks": 8,
   "blocks": [
     {
       "type": "card",
-      "name": "Kártya",
+      "name": "Kategória",
       "settings": [
         {
           "type": "collection",
           "id": "collection",
-          "label": "Gyűjtemény (opcionális)"
+          "label": "Gyűjtemény"
         },
         {
           "type": "text",
           "id": "title",
-          "label": "Cím (felülírja a gyűjtemény nevét)"
+          "label": "Cím (üresen a gyűjtemény neve)"
         },
         {
           "type": "text",
           "id": "text",
-          "label": "Leírás"
+          "label": "Rövid leírás"
         },
         {
           "type": "text",
           "id": "tag",
-          "label": "Fekete címke szövege",
+          "label": "Piros címke",
           "default": "Nagyker ár"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link (felülírja a gyűjtemény linkjét)"
         },
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Kép (opcionális)"
+          "label": "Kép (üresen ikon jelenik meg)"
         },
         {
           "type": "select",
           "id": "icon",
-          "label": "Ikon (ha nincs kép)",
-          "default": "appliance",
+          "label": "Ikon",
           "options": [
-            { "value": "appliance", "label": "Háztartási gép" },
-            { "value": "kitchen", "label": "Konyhai eszköz" },
-            { "value": "garden", "label": "Kerti felszerelés" },
-            { "value": "tag", "label": "Árcédula" },
-            { "value": "truck", "label": "Szállítás" },
-            { "value": "chat", "label": "Üzenet" }
-          ]
+            { "value": "kisgep", "label": "Konyhai kisgép" },
+            { "value": "nagygep", "label": "Konyhai nagygép" },
+            { "value": "haztartas", "label": "Háztartás & takarítás" },
+            { "value": "kert", "label": "Kerti eszközök" }
+          ],
+          "default": "kisgep"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Egyedi link (opcionális)"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Kategória kártyák",
+      "name": "Kategória csempék",
       "blocks": [
-        {
-          "type": "card",
-          "settings": {
-            "title": "Háztartási gépek",
-            "text": "Mixerek, vízforralók, botmixerek — a napi rutin gyorsabban és egyszerűbben.",
-            "tag": "Nagyker ár",
-            "icon": "appliance"
-          }
-        },
-        {
-          "type": "card",
-          "settings": {
-            "title": "Konyhai eszközök",
-            "text": "Multifunkciós gépek, darálók és praktikus kiegészítők — a konyhád felszerelve.",
-            "tag": "Nagyker ár",
-            "icon": "kitchen"
-          }
-        },
-        {
-          "type": "card",
-          "settings": {
-            "title": "Kerti felszerelés",
-            "text": "Szerszámok, locsolók és praktikus segítők a kertedhez, udvarodhoz.",
-            "tag": "Nagyker ár",
-            "icon": "garden"
-          }
-        }
+        { "type": "card" },
+        { "type": "card" },
+        { "type": "card" },
+        { "type": "card" }
       ]
     }
   ]

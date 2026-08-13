@@ -1,36 +1,42 @@
-<div class="section-pad">
-  <div class="page-width">
-    <div class="page-title">
-      <h1>Kategóriák</h1>
-    </div>
+{% render 'ee-breadcrumbs' %}
 
-    <div class="card-grid">
-      {%- for collection in collections -%}
-        <a href="{{ collection.url }}" class="info-card">
-          <div class="info-card__thumb">
-            {%- if collection.featured_image -%}
-              <img
-                src="{{ collection.featured_image | image_url: width: 700 }}"
-                alt="{{ collection.featured_image.alt | default: collection.title | escape }}"
-                loading="lazy"
-              >
-            {%- else -%}
-              <svg viewBox="0 0 24 24"><path d="M11 3H4v7l9 9 7-7-9-9z"/><circle cx="7.5" cy="7.5" r="1.4"/></svg>
-            {%- endif -%}
-          </div>
-          <span class="info-card__label label-red">{{ collection.title }}</span>
-          {%- if collection.products_count > 0 -%}
-            <span class="info-card__tag tag-dark">{{ collection.products_count }} termék</span>
+<div class="ee-container ee-section--tight">
+  <div class="ee-collection__header">
+    <h1 class="ee-collection__title">Kategóriák</h1>
+    <div class="ee-collection__intro">Böngéssz a teljes kínálatban — konyhai kisgépek, nagygépek, háztartás és kert.</div>
+  </div>
+
+  <div class="ee-tiles">
+    {%- for collection in collections -%}
+      <a href="{{ collection.url }}" class="ee-tile">
+        <span class="ee-tile__media">
+          {%- if collection.featured_image -%}
+            <img
+              src="{{ collection.featured_image | image_url: width: 600 }}"
+              alt="{{ collection.featured_image.alt | default: collection.title | escape }}"
+              width="300"
+              height="225"
+              loading="lazy"
+            >
+          {%- else -%}
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 3H4v7l9 9 7-7-9-9z"/><circle cx="7.5" cy="7.5" r="1.4"/></svg>
           {%- endif -%}
-        </a>
-      {%- endfor -%}
-    </div>
+        </span>
+        <span class="ee-tile__body">
+          <span class="ee-tile__title">{{ collection.title }}</span>
+          {%- if collection.all_products_count > 0 -%}
+            <span class="ee-tile__text">{{ collection.all_products_count }} termék</span>
+          {%- endif -%}
+        </span>
+      </a>
+    {%- endfor -%}
   </div>
 </div>
 
 {% schema %}
 {
   "name": "Kategória lista",
+  "tag": "section",
   "settings": []
 }
 {% endschema %}

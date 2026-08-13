@@ -1,19 +1,82 @@
 {
   "general": {
     "meta": {
-      "page": "{{ page }}. oldal"
+      "page": "{{ page }}. oldal",
+      "tags": "Címkével jelölve: {{ tags }}"
     },
     "404": {
       "title": "Az oldal nem található",
-      "subtext": "A keresett oldal nem létezik vagy elköltözött."
+      "subtext": "A keresett oldal nem létezik vagy elköltözött.",
+      "link": "Vissza a főoldalra"
     },
     "search": {
-      "search": "Keresés"
+      "search": "Keresés",
+      "placeholder": "Keresés a termékek között…",
+      "results_with_count": "{{ count }} találat",
+      "no_results": "Nincs találat a(z) „{{ terms }}” kifejezésre.",
+      "reset": "Keresés törlése"
     },
     "pagination": {
       "previous": "Előző",
       "next": "Következő",
-      "label": "Lapozás"
+      "label": "Lapozás",
+      "page": "{{ number }}. oldal"
+    },
+    "accessibility": {
+      "skip_to_text": "Ugrás a tartalomra",
+      "close": "Bezárás",
+      "menu": "Menü",
+      "cart": "Kosár",
+      "previous_slide": "Előző",
+      "next_slide": "Következő"
+    },
+    "newsletter_form": {
+      "email_placeholder": "E-mail cím",
+      "confirmation": "Sikeresen feliratkoztál a hírlevelünkre!",
+      "button_label": "Feliratkozás"
+    }
+  },
+  "navigation": {
+    "home": "Főoldal",
+    "collections": "Kategóriák",
+    "all_products": "Összes termék",
+    "sale": "Akciók",
+    "account": "Fiókom",
+    "login": "Belépés"
+  },
+  "collections": {
+    "general": {
+      "product_count": "{{ count }} termék",
+      "no_matches": "Nincs a szűrésnek megfelelő termék.",
+      "guide_title": "Vásárlási útmutató",
+      "subcategories": "Alkategóriák"
+    },
+    "sorting": {
+      "title": "Rendezés",
+      "featured": "Kiemelt",
+      "best_selling": "Legnépszerűbb",
+      "az": "Név szerint: A-Z",
+      "za": "Név szerint: Z-A",
+      "price_ascending": "Ár szerint növekvő",
+      "price_descending": "Ár szerint csökkenő",
+      "date_descending": "Legújabb",
+      "date_ascending": "Legrégebbi"
+    },
+    "filters": {
+      "title": "Szűrés",
+      "show": "Szűrők",
+      "hide": "Szűrők elrejtése",
+      "apply": "Szűrés",
+      "clear": "Törlés",
+      "clear_all": "Összes szűrő törlése",
+      "price": "Ár",
+      "price_from": "Minimum ár",
+      "price_to": "Maximum ár",
+      "brand": "Márka",
+      "availability": "Elérhetőség",
+      "in_stock": "Raktáron",
+      "on_sale_only": "Csak akciós termékek",
+      "results": "{{ count }} termék"
     }
   },
   "products": {
@@ -21,27 +84,61 @@
       "add_to_cart": "Kosárba",
       "sold_out": "Elfogyott",
       "unavailable": "Nem elérhető",
+      "in_stock": "Raktáron — azonnal rendelhető",
       "on_sale": "Akció",
+      "new": "Új",
+      "wholesale": "Nagyker ár",
+      "save": "-{{ percent }}%",
       "quantity": "Mennyiség",
+      "increase_quantity": "Mennyiség növelése",
+      "decrease_quantity": "Mennyiség csökkentése",
       "from_price": "-tól",
-      "vendor": "Gyártó"
+      "regular_price": "Eredeti ár",
+      "sale_price": "Akciós ár",
+      "vendor": "Gyártó",
+      "sku": "Cikkszám",
+      "variant": "Változat",
+      "description": "Termékleírás",
+      "specs": "Paraméterek",
+      "related": "Kapcsolódó termékek",
+      "tax_note": "Az ár az áfát tartalmazza. A szállítási díj a pénztárnál kerül kiszámításra.",
+      "question": "Kérdésed van? Írj üzenetben."
+    },
+    "facets": {
+      "product_count": "{{ product_count }} termék"
     }
   },
   "cart": {
     "general": {
       "title": "Kosár",
       "empty": "A kosarad üres",
+      "continue_shopping": "Vásárlás folytatása",
       "subtotal": "Részösszeg",
-      "checkout": "Pénztár",
+      "checkout": "Tovább a pénztárhoz",
       "update": "Kosár frissítése",
       "remove": "Eltávolítás",
-      "continue_shopping": "Vásárlás folytatása",
+      "note": "Megjegyzés a rendeléshez",
       "taxes_and_shipping": "Az adók és a szállítási költség a pénztárnál kerülnek kiszámításra"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Fiókom",
+      "orders": "Rendeléseim",
+      "log_out": "Kijelentkezés"
+    },
+    "login": {
+      "title": "Belépés",
+      "email": "E-mail",
+      "password": "Jelszó",
+      "submit": "Belépés",
+      "create_account": "Fiók létrehozása"
     }
   },
   "templates": {
     "contact": {
       "form": {
+        "title": "Írj nekünk",
         "name": "Név",
         "email": "E-mail",
         "phone": "Telefonszám",
@@ -55,6 +152,18 @@
     "label": "E-mail cím",
     "success": "Sikeresen feliratkoztál a hírlevelünkre!",
     "button_label": "Feliratkozás"
+  },
+  "footer": {
+    "categories": "Kategóriák",
+    "information": "Információ",
+    "shopping": "Vásárlás",
+    "terms": "ÁSZF",
+    "privacy": "Adatvédelmi tájékoztató",
+    "cookies": "Cookie-tájékoztató",
+    "shipping": "Szállítás és fizetés",
+    "contact": "Kapcsolat",
+    "payments": "Elfogadott fizetési módok",
+    "rights": "Minden jog fenntartva."
   },
   "shopify": {
     "checkout": {
