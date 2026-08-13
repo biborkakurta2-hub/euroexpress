@@ -180,6 +180,8 @@
       {%- endif -%}
     {%- endif -%}
 
+    {% render 'ee-header-search' %}
+
     {%- liquid
       if section.settings.menu != blank
         if section.settings.menu_type_desktop == 'dropdown'

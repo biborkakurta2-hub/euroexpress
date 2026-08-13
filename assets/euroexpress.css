@@ -161,54 +161,102 @@ h1, h2, h3, .h0, .h1, .h2, .h3,
   color: var(--ee-white);
 }
 .header-wrapper--border-bottom { border-bottom: 0 !important; }
+
+/* A piros fejléc flex elrendezése: logó | kereső (nyúlik) | ikonok */
 .header {
-  padding-top: 14px;
-  padding-bottom: 14px;
+  display: flex !important;
+  align-items: center;
+  gap: 20px;
+  grid-template: none !important;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
+.header__heading,
+.header__heading-link { margin: 0; }
 .header__heading-link,
 .header__heading-logo { filter: none; }
-/* Ikonok és menü szövege fehér a piros sávon */
+.header__heading { flex: 0 0 auto; }
+
+/* Dawn desktop inline menüt elrejtjük — a kategóriák a fehér sávba kerülnek */
+.header__inline-menu { display: none !important; }
+
+/* Ikonok a jobb szélen, fehérben */
+.header__icons { margin-left: 0; flex: 0 0 auto; }
 .header__icon,
 .header__icon .icon,
-.header__active-menu-item,
-.header__menu-item,
-.header__menu-item span,
-.header .list-menu__item--link {
+.header__icon .svg-wrapper {
   color: var(--ee-white) !important;
 }
 .header__icon:hover .icon { opacity: 0.8; }
-.header__icon .icon { width: 24px; height: 24px; }
+.header__icon .icon,
+.header__icon .svg-wrapper svg { width: 24px; height: 24px; }
+/* A Dawn kereső-ikon (modal) csak mobilon kell — desktopon az inline kereső van */
+.header__search { flex: 0 0 auto; }
 /* Kosárszámláló buborék fekete */
 .cart-count-bubble {
   background: var(--ee-black) !important;
   color: var(--ee-white) !important;
 }
 
-/* Kereső mező a fejlécben — fehér pill */
-.header__search { flex: 1 1 auto; max-width: 620px; margin: 0 24px; }
-.header__search .search__input.field__input {
+/* Inline kereső a piros fejlécben — fehér pill (desktop) */
+.ee-header-search { flex: 1 1 auto; max-width: 620px; }
+.ee-header-search predictive-search,
+.ee-header-search search-form { display: block; position: relative; }
+.ee-header-search__form {
+  display: flex;
+  align-items: center;
   background: var(--ee-white);
   border-radius: var(--ee-radius-pill);
-  border: 0;
-  color: var(--ee-black);
+  overflow: hidden;
+  height: 46px;
 }
-.header__search .search__button .icon { color: var(--ee-black); }
-.header__search .field:after,
-.header__search .field:before { display: none; }
+.ee-header-search__input {
+  flex: 1 1 auto;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ee-black);
+  font-size: 0.95rem;
+  padding: 0 18px;
+  height: 100%;
+}
+.ee-header-search__button {
+  border: 0;
+  background: transparent;
+  color: var(--ee-black);
+  padding: 0 16px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.ee-header-search__button .svg-wrapper svg { width: 20px; height: 20px; color: var(--ee-black); }
+.ee-header-search .predictive-search {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--ee-white);
+  color: var(--ee-black);
+  border-radius: var(--ee-radius);
+  box-shadow: var(--ee-shadow-hover);
+  z-index: 5;
+}
 
-/* Alsó kategóriamenü sáv (fehér háttéren fekete linkek) */
+/* Alsó fehér kategória-sáv (Otto stílus) */
 .ee-nav-bar {
   background: var(--ee-white);
   border-bottom: 3px solid var(--ee-red);
 }
 .ee-nav-bar .ee-nav-inner {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   flex-wrap: wrap;
   align-items: center;
-  padding: 6px 0;
+  padding: 4px 0;
 }
+.ee-nav-item { position: relative; }
 .ee-nav-bar a {
+  display: inline-block;
   font-family: var(--font-heading-family);
   font-weight: 700;
   text-transform: uppercase;
@@ -216,15 +264,48 @@ h1, h2, h3, .h0, .h1, .h2, .h3,
   letter-spacing: 0.02em;
   color: var(--ee-black);
   text-decoration: none;
-  padding: 10px 14px;
+  padding: 12px 14px;
   border-radius: var(--ee-radius-sm);
 }
 .ee-nav-bar a:hover { background: var(--ee-bg); color: var(--ee-red); }
 .ee-nav-bar a.ee-nav-sale { color: var(--ee-red); }
+.ee-nav-caret { font-size: 0.7em; opacity: 0.7; }
 
-/* Mega-menü fejléce marad Dawn-alapú, csak a felső link piros hoverrel */
-.header__menu-item:hover span,
-.header__menu-item:hover .icon-caret { color: rgba(255,255,255,0.85) !important; }
+/* Kategória-sáv legördülő (hover) */
+.ee-nav-sub {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 220px;
+  background: var(--ee-white);
+  border: 1px solid var(--ee-line);
+  border-top: 3px solid var(--ee-red);
+  border-radius: 0 0 var(--ee-radius) var(--ee-radius);
+  box-shadow: var(--ee-shadow-hover);
+  padding: 6px;
+  display: none;
+  z-index: 6;
+}
+.ee-nav-has-sub:hover .ee-nav-sub,
+.ee-nav-has-sub:focus-within .ee-nav-sub { display: block; }
+.ee-nav-sub a {
+  display: block;
+  text-transform: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 8px 12px;
+}
+
+/* Mobil: fehér kategória-sáv rejtve; a Dawn hamburger + kereső-ikon marad.
+   Desktop: a Dawn kereső-ikon rejtve, mert az inline kereső veszi át. */
+@media (min-width: 990px) {
+  .header__icons .header__search { display: none !important; }
+}
+@media (max-width: 989px) {
+  .ee-nav-bar { display: none; }
+  .ee-header-search { display: none !important; }
+  .header { display: grid !important; }
+}
 
 /* --------------------------------------------------------------------------
    HERO — piros blokk display címmel + starburst + CTA

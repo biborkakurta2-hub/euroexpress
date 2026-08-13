@@ -1,0 +1,40 @@
+{%- comment -%}
+  EuroExpress fehér kategória-sáv a piros header alatt (Otto stílus).
+  A piros fejlécben csak a logó + kereső + kosár marad; a kategóriák ide kerülnek.
+  Csak desktopon jelenik meg; mobilon a header hamburger menüje működik.
+{%- endcomment -%}
+{%- assign ee_menu = section.settings.menu | default: 'main-menu' -%}
+{%- assign ee_links = linklists[ee_menu].links -%}
+{%- if ee_links.size > 0 -%}
+  <nav class="ee-nav-bar" aria-label="Kategóriák">
+    <div class="page-width ee-nav-inner">
+      {%- for link in ee_links -%}
+        {%- assign ee_t = link.title | downcase -%}
+        {%- assign ee_sale = false -%}
+        {%- if ee_t contains 'akció' or ee_t contains 'akcio' or ee_t contains 'nagyker' -%}{%- assign ee_sale = true -%}{%- endif -%}
+        {%- if link.links.size > 0 -%}
+          <div class="ee-nav-item ee-nav-has-sub">
+            <a href="{{ link.url }}"{% if ee_sale %} class="ee-nav-sale"{% endif %}>{{ link.title }} <span class="ee-nav-caret">▾</span></a>
+            <div class="ee-nav-sub">
+              {%- for child in link.links -%}
+                <a href="{{ child.url }}">{{ child.title }}</a>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- else -%}
+          <a href="{{ link.url }}"{% if ee_sale %} class="ee-nav-sale"{% endif %}>{{ link.title }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </nav>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Kategória-sáv",
+  "tag": "section",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menü", "default": "main-menu" }
+  ]
+}
+{% endschema %}
