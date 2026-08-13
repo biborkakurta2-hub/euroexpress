@@ -180,16 +180,33 @@ h1, h2, h3, .h0, .h1, .h2, .h3,
 /* Dawn desktop inline menüt elrejtjük — a kategóriák a fehér sávba kerülnek */
 .header__inline-menu { display: none !important; }
 
-/* Ikonok a jobb szélen, fehérben */
-.header__icons { margin-left: 0; flex: 0 0 auto; }
+/* Ikonok a jobb felső sarokban, azonos méret, fehérben */
+.header__icons {
+  margin-left: 0;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 .header__icon,
 .header__icon .icon,
-.header__icon .svg-wrapper {
+.header__icon .svg-wrapper,
+.header__icon--account,
+.header__icon--cart {
   color: var(--ee-white) !important;
 }
-.header__icon:hover .icon { opacity: 0.8; }
+.header__icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+}
+.header__icon:hover .icon,
+.header__icon:hover .svg-wrapper { opacity: 0.8; }
 .header__icon .icon,
-.header__icon .svg-wrapper svg { width: 24px; height: 24px; }
+.header__icon .svg-wrapper svg,
+.header__icon account-icon,
+.header__icon account-icon svg { width: 26px !important; height: 26px !important; }
 /* A Dawn kereső-ikon (modal) csak mobilon kell — desktopon az inline kereső van */
 .header__search { flex: 0 0 auto; }
 /* Kosárszámláló buborék fekete */
@@ -258,7 +275,7 @@ h1, h2, h3, .h0, .h1, .h2, .h3,
 .ee-nav-bar a {
   display: inline-block;
   font-family: var(--font-heading-family);
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   font-size: 0.82rem;
   letter-spacing: 0.02em;
