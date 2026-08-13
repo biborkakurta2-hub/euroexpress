@@ -458,6 +458,10 @@ h1, h2, h3, .h0, .h1, .h2, .h3,
 .price .price-item--regular { font-weight: 800; color: var(--ee-black); }
 /* Kedvezmény % pötty a kártyán */
 .price__badge-sale.ee-discount { background: var(--ee-red); }
+.price__sale { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.price__sale .price-item--regular { order: 1; }
+.price__sale .price-item--sale { order: 2; }
+.price__sale .ee-discount { order: 3; }
 
 /* Gyors "Kosárba" gomb */
 .card .quick-add__submit {
