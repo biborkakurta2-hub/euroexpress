@@ -1,19 +1,68 @@
 {
+  "name": "t:sections.header.name",
   "type": "header",
-  "name": "Fejléc csoport",
   "sections": {
-    "announcement": {
+    "announcement-bar": {
       "type": "announcement-bar",
       "settings": {
-        "text": "Nagyker árak minden termékre — rendelj a webshopban vagy üzenetben!"
-      }
+        "color_scheme": "scheme-4",
+        "show_line_separator": false,
+        "show_social": false,
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      },
+      "blocks": {
+        "announcement-bar-0": {
+          "type": "announcement",
+          "settings": {
+            "text": "Ingyenes kiszállítás 25 000 Ft felett  •  Utánvét lehetséges  •  Nagykereskedelmi árak",
+            "text_alignment": "center",
+            "color_scheme": "scheme-4",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement-bar-0"
+      ]
     },
     "header": {
       "type": "header",
       "settings": {
-        "menu": "main-menu"
+        "color_scheme": "scheme-3",
+        "menu_color_scheme": "scheme-3",
+        "logo_position": "middle-left",
+        "menu": "main-menu",
+        "menu_type_desktop": "mega",
+        "sticky_header_type": "on-scroll-up",
+        "show_line_separator": false,
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "enable_customer_avatar": true,
+        "mobile_logo_position": "center",
+        "margin_bottom": 0,
+        "padding_top": 16,
+        "padding_bottom": 16
       }
+    },
+    "ee-category-bar": {
+      "type": "ee-category-bar",
+      "blocks": {
+        "c1": { "type": "link", "settings": { "title": "Konyhai kisgépek", "link": "shopify://collections/konyhai-kisgepek", "highlight": false } },
+        "c2": { "type": "link", "settings": { "title": "Konyhai nagygépek", "link": "shopify://collections/konyhai-nagygepek", "highlight": false } },
+        "c3": { "type": "link", "settings": { "title": "Háztartás & takarítás", "link": "shopify://collections/haztartas", "highlight": false } },
+        "c4": { "type": "link", "settings": { "title": "Kerti eszközök", "link": "shopify://collections/kerti-eszkozok", "highlight": false } },
+        "c5": { "type": "link", "settings": { "title": "Akciók / Nagyker árak", "link": "shopify://collections/akcio", "highlight": true } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5"],
+      "settings": {}
     }
   },
-  "order": ["announcement", "header"]
+  "order": [
+    "announcement-bar",
+    "header",
+    "ee-category-bar"
+  ]
 }

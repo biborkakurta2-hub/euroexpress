@@ -1,9 +1,68 @@
 {
   "sections": {
-    "main": {
-      "type": "main-collection",
-      "settings": {}
+    "banner": {
+      "type": "main-collection-banner",
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "scheme-2"
+      }
+    },
+    "ee_subcats": {
+      "type": "ee-subcategory-tiles",
+      "settings": {
+        "heading": "Böngéssz alkategóriában"
+      },
+      "blocks": {
+        "s1": { "type": "subcat", "settings": { "title": "Vízforraló" } },
+        "s2": { "type": "subcat", "settings": { "title": "Mixer" } },
+        "s3": { "type": "subcat", "settings": { "title": "Kávéfőző" } },
+        "s4": { "type": "subcat", "settings": { "title": "Kenyérpirító" } },
+        "s5": { "type": "subcat", "settings": { "title": "Turmixgép" } },
+        "s6": { "type": "subcat", "settings": { "title": "Aprító" } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4", "s5", "s6"]
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 24,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-2",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "standard",
+        "enable_filtering": true,
+        "filter_type": "vertical",
+        "enable_sorting": true,
+        "columns_mobile": "2",
+        "padding_top": 20,
+        "padding_bottom": 24
+      }
+    },
+    "buying_guide": {
+      "type": "ee-buying-guide",
+      "settings": {
+        "heading": "Vásárlási útmutató",
+        "use_collection_description": true,
+        "padding_top": 8,
+        "padding_bottom": 40
+      },
+      "blocks": {
+        "g1": { "type": "faq", "settings": { "question": "Milyen teljesítményt válasszak?", "answer": "<p>Kisgépeknél a nagyobb wattszám gyorsabb, erősebb működést jelent. Napi használatra a 800–1200 W tartomány ideális a legtöbb konyhai kisgéphez.</p>" } },
+        "g2": { "type": "faq", "settings": { "question": "Mennyi a szállítási idő?", "answer": "<p>Raktáron lévő termékeket jellemzően 1–3 munkanapon belül kiszállítjuk országosan, futárral vagy Foxpost csomagpontra.</p>" } },
+        "g3": { "type": "faq", "settings": { "question": "Lehet utánvéttel fizetni?", "answer": "<p>Igen, az utánvétes fizetés elérhető. Bankkártyás fizetés is választható a pénztárnál.</p>" } }
+      },
+      "block_order": ["g1", "g2", "g3"]
     }
   },
-  "order": ["main"]
+  "order": [
+    "banner",
+    "ee_subcats",
+    "product-grid",
+    "buying_guide"
+  ]
 }

@@ -1,0 +1,46 @@
+{%- comment -%}
+  EuroExpress fehér kategória-sáv a piros header alatt (Otto stílus).
+  Saját, szerkeszthető linkek (blokkok) — nem az admin menütől függ, így alapból
+  a magyar kategóriák jelennek meg (vastag fekete, az "Akciók" pirossal).
+  Csak desktopon látszik; mobilon a header hamburger menüje működik.
+{%- endcomment -%}
+{%- if section.blocks.size > 0 -%}
+  <nav class="ee-nav-bar" aria-label="Kategóriák">
+    <div class="page-width ee-nav-inner">
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.link | default: '#' }}"
+          class="{% if block.settings.highlight %}ee-nav-sale{% endif %}"
+          {{ block.shopify_attributes }}>{{ block.settings.title }}</a>
+      {%- endfor -%}
+    </div>
+  </nav>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Kategória-sáv",
+  "tag": "section",
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Kategória link",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Felirat", "default": "Kategória" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "checkbox", "id": "highlight", "label": "Piros kiemelés (pl. Akciók)", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [{
+    "name": "Kategória-sáv",
+    "blocks": [
+      { "type": "link", "settings": { "title": "Konyhai kisgépek" } },
+      { "type": "link", "settings": { "title": "Konyhai nagygépek" } },
+      { "type": "link", "settings": { "title": "Háztartás & takarítás" } },
+      { "type": "link", "settings": { "title": "Kerti eszközök" } },
+      { "type": "link", "settings": { "title": "Akciók / Nagyker árak", "highlight": true } }
+    ]
+  }]
+}
+{% endschema %}

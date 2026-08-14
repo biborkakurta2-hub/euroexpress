@@ -1,0 +1,14 @@
+{%- comment -%}
+  Csipkés csillag (starburst) badge — "Nagyker árak" / "Akció".
+  Paraméterek:
+    text  — felirat (alap: "Nagyker árak")
+    fill  — a csillag színe (alap: #E30613 piros)
+{%- endcomment -%}
+{%- assign ee_sb_text = text | default: 'Nagyker árak' -%}
+{%- assign ee_sb_fill = fill | default: '#E30613' -%}
+<span class="ee-starburst">
+  <svg viewBox="0 0 100 100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <polygon fill="{{ ee_sb_fill }}" stroke="#FFFFFF" stroke-width="2" points="50,2 59,16 75,10 76,27 92,30 84,44 97,54 84,64 92,78 75,80 72,96 57,89 50,99 43,89 28,96 25,80 8,78 16,64 3,54 16,44 8,30 24,27 25,10 41,16"/>
+  </svg>
+  <span class="ee-starburst__text">{{ ee_sb_text }}</span>
+</span>

@@ -1,0 +1,10 @@
+{%- comment -%}
+  Piros kategória-címke. (Otto/katalógus stílus: "MIX MASTER", "VÍZFORRALÓ")
+  Paraméterek:
+    text     — a felirat (kötelező)
+    variant  — 'red' (alap) | 'black' | 'new'
+{%- endcomment -%}
+{%- assign ee_lbl_variant = variant | default: 'red' -%}
+{%- if text != blank -%}
+  <span class="ee-label{% if ee_lbl_variant != 'red' %} ee-label--{{ ee_lbl_variant }}{% endif %}">{{ text }}</span>
+{%- endif -%}
